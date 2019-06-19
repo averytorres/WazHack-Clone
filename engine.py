@@ -113,10 +113,22 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    save_floor(entities, game_map, game_state)
-                    # entities, game_map, game_state, existingFloor = load_floor(game_map.dungeon_level + entity.stairs.direction,entities, game_map, game_state)
-                    # if existingFloor is None:
-                    entities = game_map.next_floor(player, message_log, constants, entity.stairs.direction)
+                    save_floor(player, entities, game_map, message_log, game_state)
+                    direction = entity.stairs.direction
+                    player, entities, game_map, message_log, game_state, existingfloor = load_floor(
+                        game_map.dungeon_level + direction, player, entities, game_map, message_log,
+                        game_state)
+                    if existingfloor is None:
+                        entities = game_map.next_floor(player, message_log, constants, entity.stairs.direction)
+                    else:
+                        if direction > 0:
+                            player.x = game_map.up_x
+                            player.y = game_map.up_y
+                        else:
+                            player.x = game_map.down_x
+                            player.y = game_map.down_y
+
+
                     fov_map = initialize_fov(game_map)
                     fov_recompute = True
                     libtcod.console_clear(con)

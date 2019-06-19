@@ -17,13 +17,18 @@ from components.equippable import Equippable
 
 
 class GameMap:
-    def __init__(self, width, height, dungeon_level=1, prev_dungeon_level=0):
+    def __init__(self, width, height, dungeon_level=1, prev_dungeon_level=0,up_x=0,down_x=0,up_y=0,down_y=0):
         self.width = width
         self.height = height
         self.tiles = self.initialize_tiles()
 
         self.dungeon_level = dungeon_level
         self.prev_dungeon_level = prev_dungeon_level
+
+        self.up_x = up_x
+        self.up_y = up_y
+        self.down_x = down_x
+        self.down_y = down_y
 
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
@@ -93,24 +98,24 @@ class GameMap:
                 num_rooms += 1
 
         if self.prev_dungeon_level > self.dungeon_level:
-            ux = center_of_last_room_x
-            uy = center_of_last_room_y
-            dx = player.x
-            dy = player.y
+            self.up_x = center_of_last_room_x
+            self.up_y = center_of_last_room_y
+            self.down_x = player.x
+            self.down_y = player.y
         else:
-            ux = player.x
-            uy = player.y
-            dx = center_of_last_room_x
-            dy = center_of_last_room_y
+            self.up_x = player.x
+            self.up_y = player.y
+            self.down_x = center_of_last_room_x
+            self.down_y = center_of_last_room_y
 
         stairs_component = Stairs(self.dungeon_level + 1, 1)
-        down_stairs = Entity(dx, dy, '>', libtcod.white, 'Stairs',
+        down_stairs = Entity(self.down_x, self.down_y, '>', libtcod.white, 'Stairs Down',
                              render_order=RenderOrder.STAIRS, stairs=stairs_component)
         entities.append(down_stairs)
 
         if self.dungeon_level > 0:
             stairs_component = Stairs(self.dungeon_level - 1, -1)
-            up_stairs = Entity(ux, uy, '<', libtcod.white, 'Stairs',
+            up_stairs = Entity(self.up_x, self.up_y, '<', libtcod.white, 'Stairs Up',
                                render_order=RenderOrder.STAIRS, stairs=stairs_component)
             entities.append(up_stairs)
 
