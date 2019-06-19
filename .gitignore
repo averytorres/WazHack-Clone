@@ -1,9 +1,7 @@
 savegame
-floor*
-.idea/*
 savegame
 savegame.dat
-.idea/workspace.xml
+.idea/*
 __pycache__/*
 components/__pycache__/*
 loader_functions/__pycache__/*
