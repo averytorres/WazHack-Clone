@@ -54,6 +54,8 @@ def load_floor(inputfloor, player, entities, game_map, message_log, game_state):
 
                 player = entities[player_index]
                 player.inventory = curr_ent[player_index].inventory
+                player.fighter = curr_ent[player_index].fighter
+                player.equipment = curr_ent[player_index].equipment
             return player, entities, game_map, message_log, game_state, True
         except:
             print("floor NOT loaded")
