@@ -7,7 +7,7 @@ from game_messages import Message
 from game_states import GameStates
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.initialize_new_game import get_constants, get_game_variables
-from loader_functions.data_loaders import load_game, save_game
+from loader_functions.data_loaders import load_game, save_game, save_floor, load_floor
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 
@@ -113,7 +113,10 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    entities = game_map.next_floor(player, message_log, constants)
+                    save_floor(entities, game_map, game_state)
+                    # entities, game_map, game_state, existingFloor = load_floor(game_map.dungeon_level + entity.stairs.direction,entities, game_map, game_state)
+                    # if existingFloor is None:
+                    entities = game_map.next_floor(player, message_log, constants, entity.stairs.direction)
                     fov_map = initialize_fov(game_map)
                     fov_recompute = True
                     libtcod.console_clear(con)

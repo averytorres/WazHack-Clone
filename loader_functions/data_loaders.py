@@ -26,3 +26,28 @@ def load_game():
     player = entities[player_index]
 
     return player, entities, game_map, message_log, game_state
+
+
+def save_floor(entities, game_map, game_state):
+    mapid = 'floor' + str(game_map.dungeon_level)
+    with shelve.open('savegame', 'n') as data_file:
+        data_file[mapid+'entities'] = entities
+        data_file[mapid+'game_map'] = game_map
+        data_file[mapid+'game_state'] = game_state
+
+
+def load_floor(inputfloor,entities, game_map, game_state):
+    mapid = 'floor' + str(inputfloor)
+    if os.path.isfile('savegame.dat'):
+        print("floor loaded")
+        #raise FileNotFoundError
+
+        with shelve.open('savegame', 'r') as data_file:
+            entities = data_file[mapid+'entities']
+            game_map = data_file[mapid+'game_map']
+            game_state = data_file[mapid+'game_state']
+
+        return entities, game_map, game_state, True
+    else:
+        print("floor NOT loaded")
+        return entities, game_map, game_state, None

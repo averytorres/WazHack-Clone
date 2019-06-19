@@ -17,12 +17,13 @@ from components.equippable import Equippable
 
 
 class GameMap:
-    def __init__(self, width, height, dungeon_level=1):
+    def __init__(self, width, height, dungeon_level=1, prev_dungeon_level=0):
         self.width = width
         self.height = height
         self.tiles = self.initialize_tiles()
 
         self.dungeon_level = dungeon_level
+        self.prev_dungeon_level = prev_dungeon_level
 
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
@@ -91,10 +92,27 @@ class GameMap:
                 rooms.append(new_room)
                 num_rooms += 1
 
-        stairs_component = Stairs(self.dungeon_level + 1)
-        down_stairs = Entity(center_of_last_room_x, center_of_last_room_y, '>', libtcod.white, 'Stairs',
+        if self.prev_dungeon_level > self.dungeon_level:
+            ux = center_of_last_room_x
+            uy = center_of_last_room_y
+            dx = player.x
+            dy = player.y
+        else:
+            ux = player.x
+            uy = player.y
+            dx = center_of_last_room_x
+            dy = center_of_last_room_y
+
+        stairs_component = Stairs(self.dungeon_level + 1, 1)
+        down_stairs = Entity(dx, dy, '>', libtcod.white, 'Stairs',
                              render_order=RenderOrder.STAIRS, stairs=stairs_component)
         entities.append(down_stairs)
+
+        if self.dungeon_level > 0:
+            stairs_component = Stairs(self.dungeon_level - 1, -1)
+            up_stairs = Entity(ux, uy, '<', libtcod.white, 'Stairs',
+                               render_order=RenderOrder.STAIRS, stairs=stairs_component)
+            entities.append(up_stairs)
 
     def create_room(self, room):
         # go through the tiles in the rectangle and make them passable
@@ -201,8 +219,9 @@ class GameMap:
 
         return False
 
-    def next_floor(self, player, message_log, constants):
-        self.dungeon_level += 1
+    def next_floor(self, player, message_log, constants, direction):
+        self.prev_dungeon_level = self.dungeon_level
+        self.dungeon_level += direction
         entities = [player]
 
         self.tiles = self.initialize_tiles()

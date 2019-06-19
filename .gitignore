@@ -1,2 +1,13 @@
 
 savegame
+floor*
+.idea/workspace.xml
+.idea/workspace.xml
+savegame
+savegame.dat
+.idea/workspace.xml
+__pycache__/random_utils.cpython-37.pyc
+components/__pycache__/stairs.cpython-37.pyc
+loader_functions/__pycache__/data_loaders.cpython-37.pyc
+loader_functions/__pycache__/initialize_new_game.cpython-37.pyc
+map_objects/__pycache__/game_map.cpython-37.pyc
