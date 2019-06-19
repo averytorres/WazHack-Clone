@@ -43,6 +43,7 @@ def save_floor(player, entities, game_map, message_log, game_state):
 
 def load_floor(inputfloor, player, entities, game_map, message_log, game_state):
     mapid = 'floor' + str(inputfloor)
+    curr_ent = entities
     if os.path.isfile('savegame.dat'):
         try:
             with shelve.open('savegame', 'r') as data_file:
@@ -52,6 +53,7 @@ def load_floor(inputfloor, player, entities, game_map, message_log, game_state):
                 game_state = data_file[mapid+'game_state']
 
                 player = entities[player_index]
+                player.inventory = curr_ent[player_index].inventory
             return player, entities, game_map, message_log, game_state, True
         except:
             print("floor NOT loaded")

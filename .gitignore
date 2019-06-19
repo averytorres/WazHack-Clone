@@ -17,3 +17,7 @@ loader_functions/__pycache__/data_loaders.cpython-37.pyc
 loader_functions/__pycache__/initialize_new_game.cpython-37.pyc
 map_objects/__pycache__/game_map.cpython-37.pyc
 savegame
+.idea/workspace.xml
+loader_functions/__pycache__/initialize_new_game.cpython-37.pyc
+loader_functions/__pycache__/data_loaders.cpython-37.pyc
+map_objects/__pycache__/game_map.cpython-37.pyc
