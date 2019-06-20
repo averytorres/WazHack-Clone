@@ -12,8 +12,9 @@ from render_functions import RenderOrder
 from components.equippable import Equippable
 from equipment_slots import EquipmentSlots
 
+
 def get_constants():
-    window_title = 'Roguelike Tutorial Revised'
+    window_title = 'Avery Test Game'
 
     screen_width = 80
     screen_height = 50

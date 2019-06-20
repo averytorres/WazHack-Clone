@@ -59,7 +59,7 @@ class Fighter:
 
         damage = self.power - target.fighter.defense
 
-        if damage > 0:
+        if damage >= 0:
             results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
                 self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
             results.extend(target.fighter.take_damage(damage))

@@ -305,7 +305,7 @@ def main():
 
         if show_main_menu:
             main_menu(con, main_menu_background_image, constants['screen_width'],
-                      constants['screen_height'])
+                      constants['screen_height'],constants['window_title'],)
 
             if show_load_error_message:
                 message_box(con, 'No save game to load', 50, constants['screen_width'], constants['screen_height'])
