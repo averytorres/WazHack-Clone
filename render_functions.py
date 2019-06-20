@@ -4,7 +4,7 @@ from enum import Enum
 
 from game_states import GameStates
 
-from menus import character_screen, inventory_menu, level_up_menu
+from menus import character_screen, inventory_menu, weapon_inventory_menu, level_up_menu
 
 
 class RenderOrder(Enum):
@@ -94,14 +94,16 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 
     libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
 
-    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY):
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
+            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
+        elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
+            inventory_title = 'Press the key next to an item to equip/unequip it, or Esc to cancel.\n'
+            weapon_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
-
-        inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
-
+            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
 
     elif game_state == GameStates.LEVEL_UP:
         level_up_menu(con, 'Level up! Choose a stat to raise:', player, 40, screen_width, screen_height)

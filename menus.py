@@ -1,5 +1,5 @@
 import tcod as libtcod
-
+from components.equipment import EquipmentSlots
 
 def menu(con, header, options, width, screen_width, screen_height):
     if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
@@ -48,8 +48,27 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
     menu(con, header, options, inventory_width, screen_width, screen_height)
 
 
+def weapon_inventory_menu(con, header, player, inventory_width, screen_width, screen_height):
+    # show a menu with each weapon item of the inventory as an option
+    if len(player.inventory.items) == 0:
+        options = ['Weapon inventory is empty.']
+    else:
+        options = []
+
+        for item in player.inventory.items:
+            if (item.equippable is not None) and (item.equippable.slot in (EquipmentSlots.MAIN_HAND, EquipmentSlots.OFF_HAND)):
+                if player.equipment.main_hand == item:
+                    options.append('{0} (on main hand)'.format(item.first_name))
+                elif player.equipment.off_hand == item:
+                    options.append('{0} (on off hand)'.format(item.first_name))
+                else:
+                    options.append(item.first_name)
+
+    menu(con, header, options, inventory_width, screen_width, screen_height)
+
+
 def main_menu(con, background_image, screen_width, screen_height,window_title):
-    libtcod.image_blit_2x(background_image, None, 0, int(screen_height/10), sx=0, sy=0, w=-1, h=-1)
+    libtcod.image_blit_2x(background_image, None, 0, 0, sx=0, sy=0, w=-1, h=-1)
 
     libtcod.console_set_default_foreground(0, libtcod.light_yellow)
     libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height*.9) - 4, libtcod.BKGND_NONE, libtcod.CENTER,

@@ -10,7 +10,7 @@ def handle_keys(key, game_state):
         return handle_player_dead_keys(key)
     elif game_state == GameStates.TARGETING:
         return handle_targeting_keys(key)
-    elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+    elif game_state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.DROP_INVENTORY):
         return handle_inventory_keys(key)
     elif game_state == GameStates.LEVEL_UP:
         return handle_level_up_menu(key)
@@ -48,6 +48,9 @@ def handle_player_turn_keys(key):
 
     elif key_char == 'i':
         return {'show_inventory': True}
+
+    elif key_char == 'w':
+        return {'show_weapon_inventory': True}
 
     elif key_char == 'd':
         return {'drop_inventory': True}

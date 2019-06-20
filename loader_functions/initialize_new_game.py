@@ -16,7 +16,7 @@ from messages.names import get_generic_last_name, get_generic_first_name
 
 def get_constants():
     dev_mode = 0
-    window_title = 'Avery Test Game'
+    window_title = 'WazHack Clone'
 
     screen_width = 80
     screen_height = 50
