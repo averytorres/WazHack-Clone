@@ -237,7 +237,6 @@ class GameMap:
 
         #this line heals the player as they move down, may turn back on later
         #player.fighter.heal(player.fighter.max_hp // 2)
-
-        message_log.add_message(Message('You take a moment to rest, and recover your strength.', libtcod.light_violet))
+        #message_log.add_message(Message('You take a moment to rest, and recover your strength.', libtcod.light_violet))
 
         return entities
