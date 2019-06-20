@@ -68,12 +68,14 @@ class Fighter:
             target_disp_name = 'You'.capitalize()
 
         attack_disp = get_generic_attack(self.owner.is_pc)
+
         if damage >= 0:
             results.append({'message': Message(attack_disp.format(
                 disp_name,target_disp_name, str(damage)), libtcod.white)})
             results.extend(target.fighter.take_damage(damage))
         else:
+            damage = 0
             results.append({'message': Message(attack_disp.format(
-                disp_name, target_disp_name), libtcod.white)})
+                disp_name, target_disp_name, str(damage)), libtcod.white)})
 
         return results
