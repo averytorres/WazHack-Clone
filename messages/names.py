@@ -9,7 +9,7 @@ def get_generic_first_name():
     fSuffixes   =["es", "on", "la", "ra", "iam", "am", "nce", "cie", "cey", "me", "ia", "et", "pe", "le", "ny", "vy", "ty", "py", "lia", "on", "se", "ah", "tin", "nn", "ob", "ton", "de", "gh", "ah", "die"]
     first = ""
 
-    fLength = randint(0,8 - 3) + 3
+    fLength = randint(0,5 - 3) + 3
     sucCons=0
     sucVows=0
     fName=""
@@ -56,7 +56,7 @@ def get_generic_last_name():
     lSuffixes   =["es", "on", "th", "te", "is", "in", "son", "ez", "cia", "len", "dez", "ng", "re", "tin", "ing", "ee", "ers", "ed", "ox", "ra", "ans", "ker", "ok", "ed", "ris", "ait", "ips", "ray", "oss", "man"]
     last = ""
 
-    lLength = randint(0,9-3)+3
+    lLength = randint(0,5-3)+3
     sucCons=0
     sucVows=0
     lName=""
