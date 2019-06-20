@@ -82,9 +82,11 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
                     fov_recompute = True
 
+                player.fighter.heal(.02)
                 game_state = GameStates.ENEMY_TURN
 
         elif wait:
+            player.fighter.heal(.2)
             game_state = GameStates.ENEMY_TURN
 
         elif pickup and game_state == GameStates.PLAYERS_TURN:
@@ -253,6 +255,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                     game_state = GameStates.LEVEL_UP
 
         if game_state == GameStates.ENEMY_TURN:
+            player.fighter.heal(.01)
             for entity in entities:
                 if entity.ai:
                     enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
