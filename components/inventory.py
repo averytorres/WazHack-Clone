@@ -19,7 +19,7 @@ class Inventory:
         else:
             results.append({
                 'item_added': item,
-                'message': Message('You pick up the {0}!'.format(item.first_name), libtcod.blue)
+                'message': Message('You pick up the {0}!'.format(item.first_name), libtcod.lighter_blue)
             })
 
             self.items.append(item)

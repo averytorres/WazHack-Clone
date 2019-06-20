@@ -1,19 +1,28 @@
 from random import randint
-
+import tcod as libtcod
 
 def get_generic_attack(is_pc):
     attacks = []
 
+    subject = '%c{0}%c '
+    result = ' %c-{2}hp%c '
+    actions = []
+    actions.append("attack")
+    actions.append("hit")
+    actions.append("barrage")
+    actions.append("strike")
     if is_pc:
-        attacks.append('{0} attack {1} for {2} hit points.')
-        attacks.append('{0} hit {1} generating {2} hit points to be lost.')
-        attacks.append('{0} whack {1} causing {2} hit points to drop.')
-        attacks.append('{0} barrage {1} leading to {2} hit points lost.')
-        attacks.append('{0} strike {1} for {2} hit points.')
-    else:
-        attacks.append('{0} attacks {1} for {2} hit points.')
-        attacks.append('{0} hits {1} causing {2} hit points to drop.')
-        attacks.append('{0} barrages {1} generating {2} hit points to be lost.')
-        attacks.append('{0} strikes {1} leading to {2} hit points lost.')
 
-    return attacks[randint(0, len(attacks) - 1)]
+        action = actions[randint(0, len(actions) - 1)]
+        attacks.append(subject% (libtcod.COLCTRL_2, libtcod.COLCTRL_STOP)
+                       + action+' %c{1}%c.'% (libtcod.COLCTRL_1, libtcod.COLCTRL_STOP)
+                       + result% (libtcod.COLCTRL_3, libtcod.COLCTRL_STOP))
+    else:
+        actions = [action + 's' for action in actions]
+
+        action = actions[randint(0, len(actions) - 1)]
+        attacks.append(subject % (libtcod.COLCTRL_1, libtcod.COLCTRL_STOP)
+                       + action + ' %c{1}%c.' % (libtcod.COLCTRL_2, libtcod.COLCTRL_STOP)
+                       + result% (libtcod.COLCTRL_4, libtcod.COLCTRL_STOP))
+
+    return attacks[0]

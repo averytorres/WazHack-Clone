@@ -244,7 +244,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
             if xp:
                 leveled_up = player.level.add_xp(xp)
-                message_log.add_message(Message('You gain {0} experience points.'.format(xp)))
+                exp_disp = 'You gain %c{0}%cxp'% (libtcod.COLCTRL_2, libtcod.COLCTRL_STOP)
+                message_log.add_message(Message(exp_disp.format(xp)))
 
                 if leveled_up:
 

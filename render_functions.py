@@ -17,7 +17,7 @@ class RenderOrder(Enum):
 def get_names_under_mouse(mouse, entities, fov_map):
     (x, y) = (mouse.cx, mouse.cy)
 
-    names = [entity.first_name.capitalize() + ' ' + entity.last_name.capitalize() for entity in entities
+    names = [entity.first_name + ' ' + entity.last_name for entity in entities
              if entity.x == x and entity.y == y and libtcod.map_is_in_fov(fov_map, entity.x, entity.y)]
     names = ', '.join(names)
 
@@ -73,6 +73,10 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     libtcod.console_clear(panel)
 
     # Print the game messages, one line at a time
+    libtcod.console_set_color_control(libtcod.COLCTRL_2, libtcod.light_amber, libtcod.black) #NPC message highlighting
+    libtcod.console_set_color_control(libtcod.COLCTRL_1, libtcod.light_gray, libtcod.black) #Player message highlighting
+    libtcod.console_set_color_control(libtcod.COLCTRL_3, libtcod.dark_red, libtcod.black)  #NPC Hit message highlighting
+    libtcod.console_set_color_control(libtcod.COLCTRL_4, libtcod.darker_red, libtcod.black)  # NPC Hit message highlighting
     y = 1
     for message in message_log.messages:
         libtcod.console_set_default_foreground(panel, message.color)

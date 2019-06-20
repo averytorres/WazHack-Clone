@@ -20,7 +20,7 @@ def kill_monster(monster):
     monster.blocks = False
     monster.fighter = None
     monster.ai = None
-    monster.first_name = 'remains of ' + monster.first_name.capitalize()
+    monster.first_name = 'Remains of ' + monster.first_name.capitalize()
     monster.render_order = RenderOrder.CORPSE
 
     return death_message
