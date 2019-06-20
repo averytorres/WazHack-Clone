@@ -11,9 +11,11 @@ from map_objects.game_map import GameMap
 from render_functions import RenderOrder
 from components.equippable import Equippable
 from equipment_slots import EquipmentSlots
+from messages.names import get_generic_last_name, get_generic_first_name
 
 
 def get_constants():
+    dev_mode = 0
     window_title = 'Avery Test Game'
 
     screen_width = 80
@@ -68,21 +70,27 @@ def get_constants():
         'fov_radius': fov_radius,
         'max_monsters_per_room': max_monsters_per_room,
         'max_items_per_room': max_items_per_room,
-        'colors': colors
+        'colors': colors,
+        'dev_mode': dev_mode
     }
 
     return constants
 
 
 def get_game_variables(constants):
-    fighter_component = Fighter(hp=100, defense=1, power=2)
+    if constants['dev_mode'] == 1:
+        fighter_component = Fighter(hp=999, defense=999, power=999)
+    else:
+        fighter_component = Fighter(hp=100, defense=1, power=2)
 
     inventory_component = Inventory(26)
     level_component = Level()
     equipment_component = Equipment()
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR,
+    player_f_name = get_generic_first_name()
+    player_l_name = get_generic_last_name()
+    player = Entity(0, 0, '@', libtcod.white, player_f_name, player_l_name, blocks=True, render_order=RenderOrder.ACTOR,
                     fighter=fighter_component, inventory=inventory_component, level=level_component,
-                    equipment=equipment_component)
+                    equipment=equipment_component, is_pc=True)
     entities = [player]
 
     equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=2)

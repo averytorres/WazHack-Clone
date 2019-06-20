@@ -14,6 +14,7 @@ from map_objects.tile import Tile
 from render_functions import RenderOrder
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
+from messages.names import get_generic_first_name
 
 
 class GameMap:
@@ -168,17 +169,18 @@ class GameMap:
             # Check if an entity is already in that location
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(monster_chances)
+                monster_f_name = get_generic_first_name()
                 if monster_choice == 'orc':
                     fighter_component = Fighter(hp=20, defense=0, power=4, xp=35)
                     ai_component = BasicMonster()
 
-                    monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True,
+                    monster = Entity(x, y, 'o', libtcod.desaturated_green, monster_f_name , 'the Orc', blocks=True,
                                      render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
                 else:
                     fighter_component = Fighter(hp=30, defense=2, power=8, xp=100)
                     ai_component = BasicMonster()
 
-                    monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True, fighter=fighter_component,
+                    monster = Entity(x, y, 'T', libtcod.darker_green, monster_f_name, 'the Troll', blocks=True, fighter=fighter_component,
                                      render_order=RenderOrder.ACTOR, ai=ai_component)
 
                 entities.append(monster)

@@ -17,11 +17,11 @@ class RenderOrder(Enum):
 def get_names_under_mouse(mouse, entities, fov_map):
     (x, y) = (mouse.cx, mouse.cy)
 
-    names = [entity.name for entity in entities
+    names = [entity.first_name.capitalize() + ' ' + entity.last_name.capitalize() for entity in entities
              if entity.x == x and entity.y == y and libtcod.map_is_in_fov(fov_map, entity.x, entity.y)]
     names = ', '.join(names)
 
-    return names.capitalize()
+    return names
 
 
 def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_color):

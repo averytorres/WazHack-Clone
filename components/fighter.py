@@ -1,6 +1,7 @@
 import tcod as libtcod
 
 from game_messages import Message
+from messages.attacks import get_generic_attack
 
 
 class Fighter:
@@ -59,12 +60,20 @@ class Fighter:
 
         damage = self.power - target.fighter.defense
 
+        if self.owner.is_pc == True:
+            disp_name = 'You'.capitalize()
+            target_disp_name = target.first_name.capitalize() + ' ' + target.last_name
+        else:
+            disp_name = self.owner.first_name.capitalize() + ' ' + self.owner.last_name
+            target_disp_name = 'You'.capitalize()
+
+        attack_disp = get_generic_attack(self.owner.is_pc)
         if damage >= 0:
-            results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
-                self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
+            results.append({'message': Message(attack_disp.format(
+                disp_name,target_disp_name, str(damage)), libtcod.white)})
             results.extend(target.fighter.take_damage(damage))
         else:
-            results.append({'message': Message('{0} attacks {1} but does no damage.'.format(
-                self.owner.name.capitalize(), target.name), libtcod.white)})
+            results.append({'message': Message(attack_disp.format(
+                disp_name, target_disp_name), libtcod.white)})
 
         return results
