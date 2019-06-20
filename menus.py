@@ -49,16 +49,15 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
 
 
 def main_menu(con, background_image, screen_width, screen_height,window_title):
-
-    libtcod.image_blit_2x(background_image, 0, 0, 0)
+    libtcod.image_blit_2x(background_image, None, 0, int(screen_height/10), sx=0, sy=0, w=-1, h=-1)
 
     libtcod.console_set_default_foreground(0, libtcod.light_yellow)
-    libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height / 2) - 4, libtcod.BKGND_NONE, libtcod.CENTER,
+    libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height*.9) - 4, libtcod.BKGND_NONE, libtcod.CENTER,
                              window_title)
     libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER,
                              '')
 
-    menu(con, '', ['Play a new game', 'Continue last game', 'Quit'], 24, screen_width, screen_height)
+    menu(con, '', ['Play a new game', 'Continue last game', 'Quit'], 24, screen_width, int(screen_height*1.8))
 
 
 def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
