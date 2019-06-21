@@ -151,6 +151,7 @@ def handle_scroll_inventory_keys(key):
 
     return {}
 
+
 def handle_main_menu(key):
     key_char = chr(key.c)
 

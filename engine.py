@@ -7,7 +7,7 @@ from game_messages import Message
 from game_states import GameStates
 from input_handlers.input_handler_main import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.initialize_new_game import get_constants, get_game_variables
-from loader_functions.data_loaders import load_game, save_game, save_floor, load_floor
+from loader_functions.data_loaders import load_game, save_game
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 from input_handlers.inventory_index_ih import handle_inventory_index_input
@@ -16,6 +16,7 @@ from input_handlers.scroll_inventory_index_ih import handle_scroll_inventory_ind
 from input_handlers.take_stairs_down_ih import handle_take_stairs_down_input
 from input_handlers.take_stairs_up_ih import handle_take_stairs_up_input
 from input_handlers.level_up_ih import handle_level_up_input
+from input_handlers.targeting_ih import handle_targeting_input
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -154,14 +155,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             game_state = GameStates.CHARACTER_SCREEN
 
         if game_state == GameStates.TARGETING:
-            if left_click:
-                target_x, target_y = left_click
-
-                item_use_results = player.inventory.use(targeting_item, entities=entities, fov_map=fov_map,
-                                                        target_x=target_x, target_y=target_y)
-                player_turn_results.extend(item_use_results)
-            elif right_click:
-                player_turn_results.append({'targeting_cancelled': True})
+            player_turn_results = handle_targeting_input(left_click,right_click,player,targeting_item,entities,fov_map,player_turn_results)
 
         if exit:
             if game_state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.SHOW_SCROLL_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
