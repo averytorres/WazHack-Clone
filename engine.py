@@ -1,6 +1,6 @@
 import tcod as libtcod
 
-from death_functions import kill_monster, kill_player
+from death_functions import kill_player
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
@@ -11,6 +11,7 @@ from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 from action_consumer.action_consumer import consume_actions
 from result_consumer.result_consumer import consume_results
+from npc_hanlders.npc_turn_h import handle_npc_turn
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -58,34 +59,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             available_results,message_log,message,game_state,entities,player,game_state,targeting_item, previous_game_state = consume_results(player_turn_result,message_log,entities,player,game_state,targeting_item, previous_game_state)
 
         #consume NPC actions
-        if game_state == GameStates.ENEMY_TURN:
-            player.fighter.heal(.01)
-            for entity in entities:
-                if entity.ai:
-                    enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
+        player,message_log,game_state = handle_npc_turn(game_state,player,entities,fov_map,game_map,message_log)
 
-                    for enemy_turn_result in enemy_turn_results:
-                        message = enemy_turn_result.get('message')
-                        dead_entity = enemy_turn_result.get('dead')
-
-                        if message:
-                            message_log.add_message(message)
-
-                        if dead_entity:
-                            if dead_entity == player:
-                                message, game_state = kill_player(dead_entity)
-                            else:
-                                message = kill_monster(dead_entity)
-
-                            message_log.add_message(message)
-
-                            if game_state == GameStates.PLAYER_DEAD:
-                                break
-
-                    if game_state == GameStates.PLAYER_DEAD:
-                        break
-            else:
-                game_state = GameStates.PLAYERS_TURN
 
 
 def main():
