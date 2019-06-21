@@ -14,6 +14,7 @@ from input_handlers.inventory_index_ih import handle_inventory_index_input
 from input_handlers.weapon_inventory_index_ih import handle_weapon_inventory_index_input
 from input_handlers.scroll_inventory_index_ih import handle_scroll_inventory_index_input
 from input_handlers.take_stairs_down_ih import handle_take_stairs_down_input
+from input_handlers.take_stairs_up_ih import handle_take_stairs_up_input
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -140,33 +141,9 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if take_stairs_down and game_state == GameStates.PLAYERS_TURN:
             player, entities, game_map, message_log, game_state, fov_map, fov_recompute = handle_take_stairs_down_input(entities,player,game_map,message_log,game_state,constants,con,fov_map,fov_recompute)
 
-
         if take_stairs_up and game_state == GameStates.PLAYERS_TURN:
-            for entity in entities:
-                if entity.stairs and entity.x == player.x and entity.y == player.y and entity.stairs.direction == -1:
-                    save_floor(player, entities, game_map, message_log, game_state)
-                    direction = entity.stairs.direction
-                    player, entities, game_map, message_log, game_state, existingfloor = load_floor(
-                        game_map.dungeon_level + direction, player, entities, game_map, message_log,
-                        game_state)
-                    if existingfloor is None:
-                        entities = game_map.next_floor(player, message_log, constants, entity.stairs.direction)
-                    else:
-                        if direction > 0:
-                            player.x = game_map.up_x
-                            player.y = game_map.up_y
-                        else:
-                            player.x = game_map.down_x
-                            player.y = game_map.down_y
-
-
-                    fov_map = initialize_fov(game_map)
-                    fov_recompute = True
-                    libtcod.console_clear(con)
-
-                    break
-            # else:
-            #     message_log.add_message(Message('There are no stairs here.', libtcod.yellow))
+            player, entities, game_map, message_log, game_state, fov_map, fov_recompute = handle_take_stairs_up_input(
+                entities, player, game_map, message_log, game_state, constants, con, fov_map, fov_recompute)
 
         if level_up:
             if level_up == 'hp':
