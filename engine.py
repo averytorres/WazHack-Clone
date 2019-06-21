@@ -4,16 +4,13 @@ from death_functions import kill_monster, kill_player
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
-from input_handlers.input_handler_main import handle_main_menu
+from action_handlers.input_handler_main import handle_main_menu
 from loader_functions.initialize_new_game import get_constants, get_game_variables
 from loader_functions.data_loaders import load_game
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 from action_consumer.action_consumer import consume_actions
-from result_handlers.dead_entity_rh import handle_dead_entity_result
-from result_handlers.equip_rh import handle_equip_result
-from result_handlers.targeting_rh import handle_targeting_result
-from result_handlers.xp_rh import handle_xp_result
+from result_consumer.result_consumer import consume_results
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -51,52 +48,16 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
         clear_all(con, entities)
 
+        #Consume player actions
         action,entities,fov_map,fov_recompute,game_map,game_state,message_log,mouse_action,player,player_turn_results,previous_game_state,exit_pressed = consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute,fov_map,message_log,constants,con,targeting_item,previous_game_state)
         if exit_pressed:
             return True
 
+        #Consume action results
         for player_turn_result in player_turn_results:
-            message = player_turn_result.get('message')
-            dead_entity = player_turn_result.get('dead')
-            item_added = player_turn_result.get('item_added')
-            item_consumed = player_turn_result.get('consumed')
-            item_dropped = player_turn_result.get('item_dropped')
-            equip = player_turn_result.get('equip')
-            targeting = player_turn_result.get('targeting')
-            targeting_cancelled = player_turn_result.get('targeting_cancelled')
-            xp = player_turn_result.get('xp')
+            available_results,message_log,message,game_state,entities,player,game_state,targeting_item, previous_game_state = consume_results(player_turn_result,message_log,entities,player,game_state,targeting_item, previous_game_state)
 
-            if message:
-                message_log.add_message(message)
-
-            if dead_entity:
-                message,game_state,message_log = handle_dead_entity_result(dead_entity,player,game_state,message_log)
-
-            if item_added:
-                entities.remove(item_added)
-                game_state = GameStates.ENEMY_TURN
-
-            if item_consumed:
-                game_state = GameStates.ENEMY_TURN
-
-            if item_dropped:
-                entities.append(item_dropped)
-
-                game_state = GameStates.ENEMY_TURN
-
-            if equip:
-                message_log, game_state, player = handle_equip_result(player,equip,message_log)
-
-            if targeting:
-                targeting_item,previous_game_state,game_state,message_log = handle_targeting_result(targeting,message_log)
-
-            if targeting_cancelled:
-                game_state = previous_game_state
-                message_log.add_message(Message('Targeting cancelled'))
-
-            if xp:
-                player,message_log,previous_game_state,game_state = handle_xp_result(player,xp,message_log,game_state,previous_game_state)
-
+        #consume NPC actions
         if game_state == GameStates.ENEMY_TURN:
             player.fighter.heal(.01)
             for entity in entities:
