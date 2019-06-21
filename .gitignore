@@ -9,6 +9,7 @@ input_handlers/__pycache__/*
 item_choice_definition/__pycache__/*
 item_probability/__pycache__/*
 loader_functions/__pycache__/*
+main_menu_hanlders/__pycache__/*
 map_objects/__pycache__/*
 messages/__pycache__/*
 npc_hanlders/__pycache__/*
