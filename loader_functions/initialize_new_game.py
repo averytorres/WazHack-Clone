@@ -43,6 +43,8 @@ def get_constants():
     max_monsters_per_room = 3
     max_items_per_room = 2
 
+    if dev_mode == 0:
+        menu_background = 'menu_background.png'
     else:
         menu_background = ''
 
