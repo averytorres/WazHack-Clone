@@ -1,13 +1,12 @@
 import tcod as libtcod
 
 from death_functions import kill_monster, kill_player
-from entity import get_blocking_entities_at_location
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
 from input_handlers.input_handler_main import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.initialize_new_game import get_constants, get_game_variables
-from loader_functions.data_loaders import load_game, save_game
+from loader_functions.data_loaders import load_game
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 from input_handlers.inventory_index_ih import handle_inventory_index_input
@@ -19,6 +18,7 @@ from input_handlers.level_up_ih import handle_level_up_input
 from input_handlers.targeting_ih import handle_targeting_input
 from input_handlers.exit_ih import handle_exit_input
 from input_handlers.move_ih import handle_move_input
+from input_handlers.pickup_ih import handle_pickup_input
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -89,14 +89,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             game_state = GameStates.ENEMY_TURN
 
         elif pickup and game_state == GameStates.PLAYERS_TURN:
-            for entity in entities:
-                if entity.item and entity.x == player.x and entity.y == player.y:
-                    pickup_results = player.inventory.add_item(entity)
-                    player_turn_results.extend(pickup_results)
-
-                    break
-            else:
-                message_log.add_message(Message('There is nothing here to pick up.', libtcod.yellow))
+            player_turn_results,message_log = handle_pickup_input(entities,player,player_turn_results,message_log)
 
         if show_inventory:
             previous_game_state = game_state
