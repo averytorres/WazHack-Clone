@@ -2,6 +2,7 @@ savegame
 savegame.dat
 .idea/*
 __pycache__/*
+action_consumer/__pycache__/*
 components/__pycache__/*
 input_handlers/__pycache__/*
 item_choice_definition/__pycache__/*
