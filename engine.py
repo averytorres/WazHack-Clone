@@ -19,6 +19,7 @@ from input_handlers.targeting_ih import handle_targeting_input
 from input_handlers.exit_ih import handle_exit_input
 from input_handlers.move_ih import handle_move_input
 from input_handlers.pickup_ih import handle_pickup_input
+from available_actions import get_available_actions
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -59,89 +60,71 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         action = handle_keys(key, game_state)
         mouse_action = handle_mouse(mouse)
 
-        move = action.get('move')
-        wait = action.get('wait')
-        pickup = action.get('pickup')
-        show_inventory = action.get('show_inventory')
-        show_weapon_inventory = action.get('show_weapon_inventory')
-        show_scroll_inventory = action.get('show_scroll_inventory')
-        drop_inventory = action.get('drop_inventory')
-        inventory_index = action.get('inventory_index')
-        weapon_inventory_index = action.get('weapon_inventory_index')
-        scroll_inventory_index = action.get('scroll_inventory_index')
-        take_stairs_down = action.get('take_stairs_down')
-        take_stairs_up = action.get('take_stairs_up')
-        level_up = action.get('level_up')
-        show_character_screen = action.get('show_character_screen')
-        exit = action.get('exit')
-        fullscreen = action.get('fullscreen')
-
-        left_click = mouse_action.get('left_click')
-        right_click = mouse_action.get('right_click')
+        avail_actions = get_available_actions(action,mouse_action)
 
         player_turn_results = []
 
-        if move and game_state == GameStates.PLAYERS_TURN:
-            player_turn_results, player, fov_recompute, game_state = handle_move_input(move,player,game_map,entities,player_turn_results,fov_recompute,game_state)
+        if avail_actions['move'] and game_state == GameStates.PLAYERS_TURN:
+            player_turn_results, player, fov_recompute, game_state = handle_move_input(avail_actions['move'],player,game_map,entities,player_turn_results,fov_recompute,game_state)
 
-        elif wait:
+        elif avail_actions['wait']:
             player.fighter.heal(.2)
             game_state = GameStates.ENEMY_TURN
 
-        elif pickup and game_state == GameStates.PLAYERS_TURN:
+        elif avail_actions['pickup'] and game_state == GameStates.PLAYERS_TURN:
             player_turn_results,message_log = handle_pickup_input(entities,player,player_turn_results,message_log)
 
-        if show_inventory:
+        if avail_actions['show_inventory']:
             previous_game_state = game_state
             game_state = GameStates.SHOW_INVENTORY
 
-        if show_weapon_inventory:
+        if avail_actions['show_weapon_inventory']:
             previous_game_state = game_state
             game_state = GameStates.SHOW_WEAPON_INVENTORY
 
-        if show_scroll_inventory:
+        if avail_actions['show_scroll_inventory']:
             previous_game_state = game_state
             game_state = GameStates.SHOW_SCROLL_INVENTORY
 
-        if drop_inventory:
+        if avail_actions['drop_inventory']:
             previous_game_state = game_state
             game_state = GameStates.DROP_INVENTORY
 
-        if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(
+        if avail_actions['inventory_index'] is not None and previous_game_state != GameStates.PLAYER_DEAD and avail_actions['inventory_index'] < len(
                 player.inventory.items):
-            player_turn_results = handle_inventory_index_input(player,inventory_index,game_state,player_turn_results,entities,fov_map)
+            player_turn_results = handle_inventory_index_input(player,avail_actions['inventory_index'],game_state,player_turn_results,entities,fov_map)
 
-        if weapon_inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and weapon_inventory_index < len(
+        if avail_actions['weapon_inventory_index'] is not None and previous_game_state != GameStates.PLAYER_DEAD and avail_actions['weapon_inventory_index'] < len(
                 player.inventory.items):
-            player_turn_results = handle_weapon_inventory_index_input(player,weapon_inventory_index,game_state,player_turn_results,entities,fov_map)
+            player_turn_results = handle_weapon_inventory_index_input(player,avail_actions['weapon_inventory_index'],game_state,player_turn_results,entities,fov_map)
 
-        if scroll_inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and scroll_inventory_index < len(
+        if avail_actions['scroll_inventory_index'] is not None and previous_game_state != GameStates.PLAYER_DEAD and avail_actions['scroll_inventory_index'] < len(
                 player.inventory.items):
-            player_turn_results = handle_scroll_inventory_index_input(player,scroll_inventory_index,game_state,player_turn_results,entities,fov_map)
+            player_turn_results = handle_scroll_inventory_index_input(player,avail_actions['scroll_inventory_index'],game_state,player_turn_results,entities,fov_map)
 
-        if take_stairs_down and game_state == GameStates.PLAYERS_TURN:
+        if avail_actions['take_stairs_down'] and game_state == GameStates.PLAYERS_TURN:
             player, entities, game_map, message_log, game_state, fov_map, fov_recompute = handle_take_stairs_down_input(entities,player,game_map,message_log,game_state,constants,con,fov_map,fov_recompute)
 
-        if take_stairs_up and game_state == GameStates.PLAYERS_TURN:
+        if avail_actions['take_stairs_up'] and game_state == GameStates.PLAYERS_TURN:
             player, entities, game_map, message_log, game_state, fov_map, fov_recompute = handle_take_stairs_up_input(
                 entities, player, game_map, message_log, game_state, constants, con, fov_map, fov_recompute)
 
-        if level_up:
-            player, game_state = handle_level_up_input(player,level_up,previous_game_state)
+        if avail_actions['level_up']:
+            player, game_state = handle_level_up_input(player,avail_actions['level_up'],previous_game_state)
 
-        if show_character_screen:
+        if avail_actions['show_character_screen']:
             previous_game_state = game_state
             game_state = GameStates.CHARACTER_SCREEN
 
         if game_state == GameStates.TARGETING:
-            player_turn_results = handle_targeting_input(left_click,right_click,player,targeting_item,entities,fov_map,player_turn_results)
+            player_turn_results = handle_targeting_input(avail_actions['left_click'],avail_actions['right_click'],player,targeting_item,entities,fov_map,player_turn_results)
 
-        if exit:
+        if avail_actions['exit']:
             game_state, player_turn_results, exit_pressed = handle_exit_input(player,game_state,previous_game_state,player_turn_results,entities,game_map,message_log)
             if exit_pressed:
                 return True
 
-        if fullscreen:
+        if avail_actions['fullscreen']:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
         for player_turn_result in player_turn_results:
