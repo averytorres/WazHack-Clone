@@ -17,6 +17,7 @@ from input_handlers.take_stairs_down_ih import handle_take_stairs_down_input
 from input_handlers.take_stairs_up_ih import handle_take_stairs_up_input
 from input_handlers.level_up_ih import handle_level_up_input
 from input_handlers.targeting_ih import handle_targeting_input
+from input_handlers.exit_ih import handle_exit_input
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -158,13 +159,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             player_turn_results = handle_targeting_input(left_click,right_click,player,targeting_item,entities,fov_map,player_turn_results)
 
         if exit:
-            if game_state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.SHOW_SCROLL_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
-                game_state = previous_game_state
-            elif game_state == GameStates.TARGETING:
-                player_turn_results.append({'targeting_cancelled': True})
-            else:
-                save_game(player, entities, game_map, message_log, game_state)
-
+            game_state, player_turn_results, exit_pressed = handle_exit_input(player,game_state,previous_game_state,player_turn_results,entities,game_map,message_log)
+            if exit_pressed:
                 return True
 
         if fullscreen:
