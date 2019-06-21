@@ -13,6 +13,7 @@ from action_consumer.action_consumer import consume_actions
 from result_handlers.dead_entity_rh import handle_dead_entity_result
 from result_handlers.equip_rh import handle_equip_result
 from result_handlers.targeting_rh import handle_targeting_result
+from result_handlers.xp_rh import handle_xp_result
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -91,18 +92,10 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
             if targeting_cancelled:
                 game_state = previous_game_state
-
                 message_log.add_message(Message('Targeting cancelled'))
 
             if xp:
-                leveled_up = player.level.add_xp(xp)
-                exp_disp = 'You gain %c{0}%cxp'% (libtcod.COLCTRL_2, libtcod.COLCTRL_STOP)
-                message_log.add_message(Message(exp_disp.format(xp)))
-
-                if leveled_up:
-
-                    previous_game_state = game_state
-                    game_state = GameStates.LEVEL_UP
+                player,message_log,previous_game_state,game_state = handle_xp_result(player,xp,message_log,game_state,previous_game_state)
 
         if game_state == GameStates.ENEMY_TURN:
             player.fighter.heal(.01)
