@@ -7,6 +7,7 @@ action_handlers/__pycache__/*
 components/__pycache__/*
 input_handlers/__pycache__/*
 item_choice_definition/__pycache__/*
+item_choice_definition/weapon_chances/__pycache__/*
 item_probability/__pycache__/*
 loader_functions/__pycache__/*
 main_menu_hanlders/__pycache__/*
