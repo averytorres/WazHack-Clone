@@ -10,7 +10,8 @@ from loader_functions.data_loaders import load_game
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 from action_consumer.action_consumer import consume_actions
-from result_handlers.dead_entity_h import handle_dead_entity_result
+from result_handlers.dead_entity_rh import handle_dead_entity_result
+from result_handlers.equip_rh import handle_equip_result
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -71,7 +72,6 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
             if item_added:
                 entities.remove(item_added)
-
                 game_state = GameStates.ENEMY_TURN
 
             if item_consumed:
@@ -83,19 +83,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 game_state = GameStates.ENEMY_TURN
 
             if equip:
-                equip_results = player.equipment.toggle_equip(equip)
-
-                for equip_result in equip_results:
-                    equipped = equip_result.get('equipped')
-                    dequipped = equip_result.get('dequipped')
-
-                    if equipped:
-                        message_log.add_message(Message('You equipped the {0}'.format(equipped.first_name)))
-
-                    if dequipped:
-                        message_log.add_message(Message('You dequipped the {0}'.format(dequipped.first_name)))
-
-                game_state = GameStates.ENEMY_TURN
+                message_log, game_state, player = handle_equip_result(player,equip,message_log)
 
             if targeting:
                 previous_game_state = GameStates.PLAYERS_TURN
