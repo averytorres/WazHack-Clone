@@ -57,7 +57,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         show_weapon_inventory = action.get('show_weapon_inventory')
         drop_inventory = action.get('drop_inventory')
         inventory_index = action.get('inventory_index')
-        take_stairs = action.get('take_stairs')
+        take_stairs_down = action.get('take_stairs_down')
+        take_stairs_up = action.get('take_stairs_up')
         level_up = action.get('level_up')
         show_character_screen = action.get('show_character_screen')
         exit = action.get('exit')
@@ -124,9 +125,9 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             elif game_state == GameStates.DROP_INVENTORY:
                 player_turn_results.extend(player.inventory.drop_item(item))
 
-        if take_stairs and game_state == GameStates.PLAYERS_TURN:
+        if take_stairs_down and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
-                if entity.stairs and entity.x == player.x and entity.y == player.y:
+                if entity.stairs and entity.x == player.x and entity.y == player.y and entity.stairs.direction == 1:
                     save_floor(player, entities, game_map, message_log, game_state)
                     direction = entity.stairs.direction
                     player, entities, game_map, message_log, game_state, existingfloor = load_floor(
@@ -148,8 +149,35 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                     libtcod.console_clear(con)
 
                     break
-            else:
-                message_log.add_message(Message('There are no stairs here.', libtcod.yellow))
+            # else:
+            #     message_log.add_message(Message('There are no stairs here.', libtcod.yellow))
+
+        if take_stairs_up and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.stairs and entity.x == player.x and entity.y == player.y and entity.stairs.direction == -1:
+                    save_floor(player, entities, game_map, message_log, game_state)
+                    direction = entity.stairs.direction
+                    player, entities, game_map, message_log, game_state, existingfloor = load_floor(
+                        game_map.dungeon_level + direction, player, entities, game_map, message_log,
+                        game_state)
+                    if existingfloor is None:
+                        entities = game_map.next_floor(player, message_log, constants, entity.stairs.direction)
+                    else:
+                        if direction > 0:
+                            player.x = game_map.up_x
+                            player.y = game_map.up_y
+                        else:
+                            player.x = game_map.down_x
+                            player.y = game_map.down_y
+
+
+                    fov_map = initialize_fov(game_map)
+                    fov_recompute = True
+                    libtcod.console_clear(con)
+
+                    break
+            # else:
+            #     message_log.add_message(Message('There are no stairs here.', libtcod.yellow))
 
         if level_up:
             if level_up == 'hp':
