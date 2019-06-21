@@ -67,6 +67,20 @@ def weapon_inventory_menu(con, header, player, inventory_width, screen_width, sc
     menu(con, header, options, inventory_width, screen_width, screen_height)
 
 
+def scroll_inventory_menu(con, header, player, inventory_width, screen_width, screen_height):
+    # show a menu with each scroll item of the inventory as an option
+    if len(player.inventory.items) == 0:
+        options = ['Weapon inventory is empty.']
+    else:
+        options = []
+
+        for item in player.inventory.items:
+            if (item.item.use_function is not None) and (('SCROLL' in (item.first_name.upper()) or ('BOOK' in (item.first_name.upper())))):
+                    options.append(item.first_name)
+
+    menu(con, header, options, inventory_width, screen_width, screen_height)
+
+
 def main_menu(con, background_image, screen_width, screen_height,window_title):
     libtcod.image_blit_2x(background_image, None, 0, 0, sx=0, sy=0, w=-1, h=-1)
 

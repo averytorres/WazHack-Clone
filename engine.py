@@ -55,6 +55,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         pickup = action.get('pickup')
         show_inventory = action.get('show_inventory')
         show_weapon_inventory = action.get('show_weapon_inventory')
+        show_scroll_inventory = action.get('show_scroll_inventory')
         drop_inventory = action.get('drop_inventory')
         inventory_index = action.get('inventory_index')
         take_stairs_down = action.get('take_stairs_down')
@@ -110,6 +111,10 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             previous_game_state = game_state
             game_state = GameStates.SHOW_WEAPON_INVENTORY
 
+        if show_scroll_inventory:
+            previous_game_state = game_state
+            game_state = GameStates.SHOW_SCROLL_INVENTORY
+
         if drop_inventory:
             previous_game_state = game_state
             game_state = GameStates.DROP_INVENTORY
@@ -121,6 +126,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             if game_state == GameStates.SHOW_INVENTORY:
                 player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
             elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
+                player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
+            elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
                 player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
             elif game_state == GameStates.DROP_INVENTORY:
                 player_turn_results.extend(player.inventory.drop_item(item))
@@ -205,7 +212,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 player_turn_results.append({'targeting_cancelled': True})
 
         if exit:
-            if game_state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
+            if game_state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.SHOW_SCROLL_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
                 game_state = previous_game_state
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
