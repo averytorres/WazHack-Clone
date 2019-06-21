@@ -18,6 +18,7 @@ from input_handlers.take_stairs_up_ih import handle_take_stairs_up_input
 from input_handlers.level_up_ih import handle_level_up_input
 from input_handlers.targeting_ih import handle_targeting_input
 from input_handlers.exit_ih import handle_exit_input
+from input_handlers.move_ih import handle_move_input
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -81,23 +82,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         player_turn_results = []
 
         if move and game_state == GameStates.PLAYERS_TURN:
-            dx, dy = move
-            destination_x = player.x + dx
-            destination_y = player.y + dy
-
-            if not game_map.is_blocked(destination_x, destination_y):
-                target = get_blocking_entities_at_location(entities, destination_x, destination_y)
-
-                if target:
-                    attack_results = player.fighter.attack(target)
-                    player_turn_results.extend(attack_results)
-                else:
-                    player.move(dx, dy)
-
-                    fov_recompute = True
-
-                player.fighter.heal(.02)
-                game_state = GameStates.ENEMY_TURN
+            player_turn_results, player, fov_recompute, game_state = handle_move_input(move,player,game_map,entities,player_turn_results,fov_recompute,game_state)
 
         elif wait:
             player.fighter.heal(.2)
