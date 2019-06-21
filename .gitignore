@@ -10,4 +10,5 @@ item_probability/__pycache__/*
 loader_functions/__pycache__/*
 map_objects/__pycache__/*
 messages/__pycache__/*
+result_handlers/__pycache__/*
 .DS_Store

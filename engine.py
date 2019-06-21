@@ -10,6 +10,7 @@ from loader_functions.data_loaders import load_game
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 from action_consumer.action_consumer import consume_actions
+from result_handlers.dead_entity_h import handle_dead_entity_result
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -47,7 +48,9 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
         clear_all(con, entities)
 
-        action,entities,fov_map,fov_recompute,game_map,game_state,message_log,mouse_action,player,player_turn_results,previous_game_state = consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute,fov_map,message_log,constants,con,targeting_item,previous_game_state)
+        action,entities,fov_map,fov_recompute,game_map,game_state,message_log,mouse_action,player,player_turn_results,previous_game_state,exit_pressed = consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute,fov_map,message_log,constants,con,targeting_item,previous_game_state)
+        if exit_pressed:
+            return True
 
         for player_turn_result in player_turn_results:
             message = player_turn_result.get('message')
@@ -64,12 +67,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 message_log.add_message(message)
 
             if dead_entity:
-                if dead_entity == player:
-                    message, game_state = kill_player(dead_entity)
-                else:
-                    message = kill_monster(dead_entity)
-
-                message_log.add_message(message)
+                message,game_state,message_log = handle_dead_entity_result(dead_entity,player,game_state,message_log)
 
             if item_added:
                 entities.remove(item_added)

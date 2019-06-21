@@ -18,6 +18,7 @@ from action_consumer.available_actions import get_available_actions
 def consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute,fov_map,message_log,constants,con,targeting_item,previous_game_state):
     action = handle_keys(key, game_state)
     mouse_action = handle_mouse(mouse)
+    exit_pressed = False
 
     avail_actions = get_available_actions(action, mouse_action)
 
@@ -93,10 +94,8 @@ def consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute
         game_state, player_turn_results, exit_pressed = handle_exit_input(player, game_state, previous_game_state,
                                                                           player_turn_results, entities, game_map,
                                                                           message_log)
-        if exit_pressed:
-            return True
 
     if avail_actions['fullscreen']:
         libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
-    return action,entities,fov_map,fov_recompute,game_map,game_state,message_log,mouse_action,player,player_turn_results,previous_game_state
+    return action,entities,fov_map,fov_recompute,game_map,game_state,message_log,mouse_action,player,player_turn_results,previous_game_state,exit_pressed
