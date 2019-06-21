@@ -12,6 +12,7 @@ from render_functions import clear_all, render_all
 from action_consumer.action_consumer import consume_actions
 from result_handlers.dead_entity_rh import handle_dead_entity_result
 from result_handlers.equip_rh import handle_equip_result
+from result_handlers.targeting_rh import handle_targeting_result
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -86,12 +87,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 message_log, game_state, player = handle_equip_result(player,equip,message_log)
 
             if targeting:
-                previous_game_state = GameStates.PLAYERS_TURN
-                game_state = GameStates.TARGETING
-
-                targeting_item = targeting
-
-                message_log.add_message(targeting_item.item.targeting_message)
+                targeting_item,previous_game_state,game_state,message_log = handle_targeting_result(targeting,message_log)
 
             if targeting_cancelled:
                 game_state = previous_game_state
