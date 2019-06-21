@@ -5,11 +5,14 @@ from entity import get_blocking_entities_at_location
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
-from input_handlers import handle_keys, handle_mouse, handle_main_menu
+from input_handlers.input_handler_main import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.initialize_new_game import get_constants, get_game_variables
 from loader_functions.data_loaders import load_game, save_game, save_floor, load_floor
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all
+from input_handlers.inventory_index_ih import handle_inventory_index_input
+from input_handlers.weapon_inventory_index_ih import handle_weapon_inventory_index_input
+from input_handlers.scroll_inventory_index_ih import handle_scroll_inventory_index_input
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -58,6 +61,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         show_scroll_inventory = action.get('show_scroll_inventory')
         drop_inventory = action.get('drop_inventory')
         inventory_index = action.get('inventory_index')
+        weapon_inventory_index = action.get('weapon_inventory_index')
+        scroll_inventory_index = action.get('scroll_inventory_index')
         take_stairs_down = action.get('take_stairs_down')
         take_stairs_up = action.get('take_stairs_up')
         level_up = action.get('level_up')
@@ -121,16 +126,15 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
         if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(
                 player.inventory.items):
-            item = player.inventory.items[inventory_index]
+            player_turn_results = handle_inventory_index_input(player,inventory_index,game_state,player_turn_results,entities,fov_map)
 
-            if game_state == GameStates.SHOW_INVENTORY:
-                player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
-            elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
-                player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
-            elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
-                player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
-            elif game_state == GameStates.DROP_INVENTORY:
-                player_turn_results.extend(player.inventory.drop_item(item))
+        if weapon_inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and weapon_inventory_index < len(
+                player.inventory.items):
+            player_turn_results = handle_weapon_inventory_index_input(player,weapon_inventory_index,game_state,player_turn_results,entities,fov_map)
+
+        if scroll_inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and scroll_inventory_index < len(
+                player.inventory.items):
+            player_turn_results = handle_scroll_inventory_index_input(player,scroll_inventory_index,game_state,player_turn_results,entities,fov_map)
 
         if take_stairs_down and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
@@ -346,7 +350,7 @@ def main():
     show_main_menu = True
     show_load_error_message = False
 
-    main_menu_background_image = libtcod.image_load('menu_background.png')
+    main_menu_background_image = libtcod.image_load(constants['menu_background'])
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()

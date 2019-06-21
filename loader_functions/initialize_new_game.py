@@ -43,6 +43,9 @@ def get_constants():
     max_monsters_per_room = 3
     max_items_per_room = 2
 
+    else:
+        menu_background = ''
+
     colors = {
         'dark_wall': libtcod.Color(50, 50, 50),
         'dark_ground': libtcod.Color(105, 105, 105),
@@ -71,7 +74,8 @@ def get_constants():
         'max_monsters_per_room': max_monsters_per_room,
         'max_items_per_room': max_items_per_room,
         'colors': colors,
-        'dev_mode': dev_mode
+        'dev_mode': dev_mode,
+        'menu_background': menu_background,
     }
 
     return constants
