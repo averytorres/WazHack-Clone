@@ -4,18 +4,14 @@ from random import randint
 from random_utils import from_dungeon_level,random_choice_from_dict
 from components.ai import BasicMonster
 from components.fighter import Fighter
-from components.item import Item
 from components.stairs import Stairs
 from entity import Entity
-from game_messages import Message
-from item_functions import cast_confuse, cast_fireball, cast_lightning, heal
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
 from render_functions import RenderOrder
-from components.equipment import EquipmentSlots
-from components.equippable import Equippable
 from messages.names import get_generic_first_name
 from item_probability.item_chances import get_item_chances
+from item_choice_definition.item_choice import get_item_choice
 
 
 class GameMap:
@@ -185,32 +181,7 @@ class GameMap:
 
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
-
-                if item_choice == 'healing_potion':
-                    item_component = Item(use_function=heal, amount=40)
-                    item = Entity(x, y, '!', libtcod.violet, 'Healing Potion', render_order=RenderOrder.ITEM,
-                                  item=item_component)
-                elif item_choice == 'sword':
-                    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=3)
-                    item = Entity(x, y, '/', libtcod.sky, 'Sword', equippable=equippable_component)
-                elif item_choice == 'shield':
-                    equippable_component = Equippable(EquipmentSlots.OFF_HAND, defense_bonus=1)
-                    item = Entity(x, y, '[', libtcod.darker_orange, 'Shield', equippable=equippable_component)
-                elif item_choice == 'fireball_scroll':
-                    item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message(
-                        'Left-click a target tile for the fireball, or right-click to cancel.', libtcod.light_cyan),
-                                          damage=25, radius=3)
-                    item = Entity(x, y, '#', libtcod.red, 'Fireball Scroll', render_order=RenderOrder.ITEM,
-                                  item=item_component)
-                elif item_choice == 'confusion_scroll':
-                    item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message(
-                        'Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan))
-                    item = Entity(x, y, '#', libtcod.light_pink, 'Confusion Scroll', render_order=RenderOrder.ITEM,
-                                  item=item_component)
-                else:
-                    item_component = Item(use_function=cast_lightning, damage=40, maximum_range=5)
-                    item = Entity(x, y, '#', libtcod.yellow, 'Lightning Scroll', render_order=RenderOrder.ITEM,
-                                  item=item_component)
+                item = get_item_choice(item_choice, x, y)
 
                 entities.append(item)
 
