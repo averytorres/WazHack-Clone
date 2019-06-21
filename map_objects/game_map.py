@@ -15,6 +15,7 @@ from render_functions import RenderOrder
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
 from messages.names import get_generic_first_name
+from item_probability.item_chances import get_item_chances
 
 
 class GameMap:
@@ -152,14 +153,7 @@ class GameMap:
             'troll': from_dungeon_level([[15, 3], [30, 5], [60, 7]], self.dungeon_level)
         }
 
-        item_chances = {
-            'healing_potion': 35,
-            'sword': from_dungeon_level([[5, 4]], self.dungeon_level),
-            'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
-            'lightning_scroll': from_dungeon_level([[25, 4]], self.dungeon_level),
-            'fireball_scroll': from_dungeon_level([[25, 6]], self.dungeon_level),
-            'confusion_scroll': from_dungeon_level([[10, 2]], self.dungeon_level)
-        }
+        item_chances = get_item_chances(self)
 
         for i in range(number_of_monsters):
             # Choose a random location in the room
