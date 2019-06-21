@@ -10,4 +10,4 @@ def handle_level_up_input(player,level_up,previous_game_state):
 
     game_state = previous_game_state
 
-    return game_state
+    return player, game_state

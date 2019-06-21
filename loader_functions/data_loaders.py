@@ -60,8 +60,6 @@ def load_floor(inputfloor, player, entities, game_map, message_log, game_state):
                 player.inventory.owner = player
             return player, entities, game_map, message_log, game_state, True
         except:
-            print("floor NOT loaded")
             return player, entities, game_map, message_log, game_state, None
     else:
-        print("floor NOT loaded")
         return player, entities, game_map, message_log, game_state, None

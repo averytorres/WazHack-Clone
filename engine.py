@@ -15,6 +15,7 @@ from input_handlers.weapon_inventory_index_ih import handle_weapon_inventory_ind
 from input_handlers.scroll_inventory_index_ih import handle_scroll_inventory_index_input
 from input_handlers.take_stairs_down_ih import handle_take_stairs_down_input
 from input_handlers.take_stairs_up_ih import handle_take_stairs_up_input
+from input_handlers.level_up_ih import handle_level_up_input
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -146,15 +147,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 entities, player, game_map, message_log, game_state, constants, con, fov_map, fov_recompute)
 
         if level_up:
-            if level_up == 'hp':
-                player.fighter.base_max_hp += 20
-                player.fighter.hp += 20
-            elif level_up == 'str':
-                player.fighter.base_power += 1
-            elif level_up == 'def':
-                player.fighter.base_defense += 1
-
-            game_state = previous_game_state
+            player, game_state = handle_level_up_input(player,level_up,previous_game_state)
 
         if show_character_screen:
             previous_game_state = game_state
