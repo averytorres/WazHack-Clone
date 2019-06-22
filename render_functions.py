@@ -96,23 +96,25 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.SHOW_SCROLL_INVENTORY):
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = get_menu_title(game_state)
-            inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,key,mouse,)
+            inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,key,mouse,game_state)
         elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
             inventory_title = get_menu_title(game_state)
             weapon_inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height, key,
-                           mouse, )
+                           mouse,game_state )
         elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
-            inventory_title = 'Press the key next to an item to read it, or Esc to cancel.\n'
-            scroll_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
+            inventory_title = get_menu_title(game_state)
+            scroll_inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,
+                                  key,
+                                  mouse,game_state)
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
-            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
+            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,game_state)
 
     elif game_state == GameStates.LEVEL_UP:
-        level_up_menu(con, 'Level up! Choose a stat to raise:', player, 50, screen_width, screen_height,key,mouse,)
+        level_up_menu(con, 'Level up! Choose a stat to raise:', player, 50, screen_width, screen_height,key,mouse,game_state,game_state)
 
     elif game_state == GameStates.CHARACTER_SCREEN:
-        character_screen(player, 30, 10, screen_width, screen_height,key,mouse,)
+        character_screen(player, 30, 10, screen_width, screen_height,key,mouse,game_state)
 
 
 def clear_all(con, entities):

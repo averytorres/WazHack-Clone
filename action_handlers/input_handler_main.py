@@ -2,6 +2,8 @@ import tcod as libtcod
 
 from game_states import GameStates
 from menu_info.menu_details import get_menu_title, get_menu_width
+from action_handlers.weapon_inventory_index_ih import get_weapon_inventory_index_options
+from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
 import math
 
 def handle_keys(key,mouse,game_state):
@@ -121,9 +123,9 @@ def handle_inventory_keys(key,mouse):
 
     return {}
 
-def handle_inventory_mouse(game_state,key, mouse,constants,con,player):
+def handle_inventory_mouse(game_state,options,key, mouse,constants,con,player):
 
-    index = determine_menu_index(game_state,con,constants,player,mouse)
+    index = determine_menu_index(game_state,options,con,constants,player,mouse)
 
     if index is not None:
         return {'inventory_index': index}
@@ -155,9 +157,9 @@ def handle_weapon_inventory_keys(key,mouse):
     return {}
 
 
-def handle_weapon_inventory_mouse(game_state,key, mouse,constants,con,player):
+def handle_weapon_inventory_mouse(game_state,options,key, mouse,constants,con,player):
 
-    index = determine_menu_index(game_state, con, constants, player, mouse)
+    index = determine_menu_index(game_state,options, con, constants, player, mouse)
     if index is not None:
         return {'weapon_inventory_index': index}
 
@@ -175,6 +177,22 @@ def handle_scroll_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
     if index >= 0:
+        return {'scroll_inventory_index': index}
+
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        # Alt+Enter: toggle full screen
+        return {'fullscreen': True}
+    elif key.vk == libtcod.KEY_ESCAPE:
+        # Exit the menu
+        return {'exit': True}
+
+    return {}
+
+
+def handle_scroll_inventory_mouse(game_state,options,key, mouse,constants,con,player):
+
+    index = determine_menu_index(game_state,options, con, constants, player, mouse)
+    if index is not None:
         return {'scroll_inventory_index': index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
@@ -226,9 +244,14 @@ def handle_mouse(key,mouse,game_state,constants,con,player):
 
     if mouse.lbutton_pressed:
         if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-            return handle_inventory_mouse(game_state,key, mouse,constants,con,player)
+            options = player.inventory.items
+            return handle_inventory_mouse(game_state,options,key, mouse,constants,con,player)
         elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
-            return handle_weapon_inventory_mouse(game_state,key, mouse,constants,con,player)
+            options = get_weapon_inventory_index_options(player)
+            return handle_weapon_inventory_mouse(game_state,options,key, mouse,constants,con,player)
+        elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
+            options = get_scroll_inventory_index_options(player)
+            return handle_scroll_inventory_mouse(game_state,options,key, mouse,constants,con,player)
         else:
             return {'left_click': (x, y)}
     elif mouse.rbutton_pressed:
@@ -237,11 +260,11 @@ def handle_mouse(key,mouse,game_state,constants,con,player):
     return {}
 
 
-def determine_menu_index(menu_name,con,constants,player,mouse):
+def determine_menu_index(menu_name,options,con,constants,player,mouse):
     inventory_title = get_menu_title(menu_name)
-    header_height = libtcod.console_get_height_rect(con, 0, 0, get_menu_width(menu_name),
+    menu_width =  get_menu_width(menu_name)
+    header_height = libtcod.console_get_height_rect(con, 0, 0, menu_width,
                                                     constants['screen_height'], inventory_title)
-    options = player.inventory.items
     # print("determine_menu_index 1"+str(menu_name)+": "+str(header_height))
     # print("determine_menu_index 2" + str(menu_name) + ": " + str(menu_width))
     height = len(options) + header_height
@@ -256,7 +279,9 @@ def determine_menu_index(menu_name,con,constants,player,mouse):
     print("determine_menu_index y-" + str(menu_name) + ": " + str(y))
 
     (menu_x, menu_y) = (mouse.cx - x_offset, mouse.cy - y_offset)
-    menu_y = int(math.ceil(menu_y)) - 1
-    index = int(menu_y)
-
-    return index    # print("determine_menu_index 3" + str(menu_name) + ": " + str(int(math.ceil(menu_y)) - 1))
+    # print("determine_menu_index 3" + str(menu_name) + ": " + str(int(math.ceil(menu_y)) - 1))
+    if menu_x >= 0 and menu_x < menu_width and menu_y >= 0 and menu_y < height - header_height:
+        menu_y = int(math.ceil(menu_y)) - 1
+        return menu_y
+    else:
+        return menu_y

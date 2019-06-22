@@ -43,10 +43,12 @@ def get_available_actions(action,mouse_action):
     right_click = mouse_action.get('right_click')
     mouse_inventory_index = mouse_action.get('inventory_index')
     mouse_weapon_inventory_index = mouse_action.get('weapon_inventory_index')
+    mouse_scroll_inventory_index = mouse_action.get('scroll_inventory_index')
 
     available_actions.update({'left_click': left_click})
     available_actions.update({'right_click': right_click})
     available_actions.update({'inventory_index': mouse_inventory_index})
     available_actions.update({'weapon_inventory_index': mouse_weapon_inventory_index})
+    available_actions.update({'scroll_inventory_index': mouse_scroll_inventory_index})
 
     return available_actions

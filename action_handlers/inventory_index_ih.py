@@ -2,6 +2,8 @@ from game_states import GameStates
 
 
 def handle_inventory_index_input(player,inventory_index,game_state,player_turn_results,entities,fov_map):
+    if (inventory_index >= len(player.inventory.items)):
+        return player_turn_results
     item = player.inventory.items[inventory_index]
 
     if game_state == GameStates.SHOW_INVENTORY:

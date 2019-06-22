@@ -10,7 +10,7 @@ from loader_functions.initialize_new_game import get_game_variables
 def handle_main_menu_operations(con,main_menu_background_image,constants,show_load_error_message,key,mouse,player,entities,game_map,message_log,game_state,show_main_menu):
     exit_game_break = False
     main_menu(con, main_menu_background_image, constants['screen_width'],
-              constants['screen_height'], constants['window_title'],key, mouse)
+              constants['screen_height'], constants['window_title'],key, mouse,game_state)
 
     if show_load_error_message:
         message_box(con, 'No save game to load', 50, constants['screen_width'], constants['screen_height'])
