@@ -1,6 +1,6 @@
 from item_probability.potion_chances import get_potion_chances
 from item_probability.scroll_chances import get_scroll_chances
-from item_probability.sword_chances import get_sword_chances
+from item_probability.weapon_chances import get_sword_chances
 from item_probability.shield_chances import get_shield_chances
 
 
