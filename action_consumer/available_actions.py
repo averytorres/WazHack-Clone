@@ -22,6 +22,7 @@ def get_available_actions(action,mouse_action):
 
     left_click = mouse_action.get('left_click')
     right_click = mouse_action.get('right_click')
+    mouse_inventory_index = mouse_action.get('inventory_index')
 
     available_actions.update({'move':move})
     available_actions.update({'wait':wait})
@@ -42,5 +43,6 @@ def get_available_actions(action,mouse_action):
 
     available_actions.update({'left_click': left_click})
     available_actions.update({'right_click': right_click})
+    available_actions.update({'inventory_index': mouse_inventory_index})
 
     return available_actions

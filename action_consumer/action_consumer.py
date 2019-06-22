@@ -17,7 +17,7 @@ from action_consumer.available_actions import get_available_actions
 
 def consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute,fov_map,message_log,constants,con,targeting_item,previous_game_state):
     action = handle_keys(key,mouse,game_state)
-    mouse_action = handle_mouse(mouse)
+    mouse_action = handle_mouse(key,mouse,game_state,constants,con,player)
     exit_pressed = False
 
     avail_actions = get_available_actions(action, mouse_action)

@@ -1,10 +1,9 @@
 import tcod as libtcod
 
 from enum import Enum
-
 from game_states import GameStates
-
 from menus import character_screen, inventory_menu, weapon_inventory_menu, scroll_inventory_menu, level_up_menu
+from menu_info.menu_details import get_menu_title, get_menu_width
 
 
 class RenderOrder(Enum):
@@ -96,8 +95,8 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.SHOW_SCROLL_INVENTORY):
         if game_state == GameStates.SHOW_INVENTORY:
-            inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
-            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
+            inventory_title = get_menu_title("inventory_title")
+            inventory_menu(con, inventory_title, player, get_menu_width("inventory_title"), screen_width, screen_height,key,mouse,)
         elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
             inventory_title = 'Press the key next to an item to equip/unequip it, or Esc to cancel.\n'
             weapon_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
@@ -109,7 +108,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
             inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
 
     elif game_state == GameStates.LEVEL_UP:
-        level_up_menu(con, 'Level up! Choose a stat to raise:', player, 40, screen_width, screen_height,key,mouse,)
+        level_up_menu(con, 'Level up! Choose a stat to raise:', player, 50, screen_width, screen_height,key,mouse,)
 
     elif game_state == GameStates.CHARACTER_SCREEN:
         character_screen(player, 30, 10, screen_width, screen_height,key,mouse,)

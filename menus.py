@@ -1,4 +1,5 @@
 import tcod as libtcod
+import math
 from components.equipment import EquipmentSlots
 
 
@@ -37,7 +38,7 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse):
 
     # Compute x and y offsets to convert console position to menu position
     x_offset = x  # x is the left edge of the menu
-    y_offset = y + header_height  # The top edge of the menu
+    y_offset = y + (header_height - (header_height/5))  # The top edge of the menu
 
     # Now we'll blit the contents of "window" to the root console
     # The last two parameters of this next function control the foreground transparency
@@ -56,6 +57,7 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse):
 
             # Check if click is within the menu and on a choice
             if menu_x >= 0 and menu_x < width and menu_y >= 0 and menu_y < height - header_height:
+                menu_y = int(math.ceil(menu_y)) - 1
                 return menu_y
 
         if mouse.rbutton_pressed or key.vk == libtcod.KEY_ESCAPE:
