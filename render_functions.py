@@ -40,7 +40,7 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
 
 
 def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height,
-               bar_width, panel_height, panel_y, mouse, colors, game_state):
+               bar_width, panel_height, panel_y,key,mouse, colors, game_state):
     if fov_recompute:
     # Draw all the tiles in the game map
         for y in range(game_map.height):
@@ -97,22 +97,22 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.SHOW_SCROLL_INVENTORY):
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
-            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
+            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
         elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
             inventory_title = 'Press the key next to an item to equip/unequip it, or Esc to cancel.\n'
-            weapon_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
+            weapon_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
         elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
             inventory_title = 'Press the key next to an item to read it, or Esc to cancel.\n'
-            scroll_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
+            scroll_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
-            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
+            inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
 
     elif game_state == GameStates.LEVEL_UP:
-        level_up_menu(con, 'Level up! Choose a stat to raise:', player, 40, screen_width, screen_height)
+        level_up_menu(con, 'Level up! Choose a stat to raise:', player, 40, screen_width, screen_height,key,mouse,)
 
     elif game_state == GameStates.CHARACTER_SCREEN:
-        character_screen(player, 30, 10, screen_width, screen_height)
+        character_screen(player, 30, 10, screen_width, screen_height,key,mouse,)
 
 
 def clear_all(con, entities):
