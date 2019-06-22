@@ -1,9 +1,11 @@
-from random_utils import from_dungeon_level
-from item_choice_definition.weapon_chances.knive_chances import get_knive_chances
+from item_probability.weapon_chances_values.knive_chances import get_knive_chances
+from item_probability.weapon_chances_values.sword_chances import get_sword_chances
 
-def get_sword_chances(game_map):
+
+def get_weapon_chances(game_map):
     chances = {}
 
     chances.update(get_knive_chances(game_map))
+    chances.update(get_sword_chances(game_map))
 
     return chances
