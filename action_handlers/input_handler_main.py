@@ -242,6 +242,8 @@ def determine_menu_index(menu_name,con,constants,player,mouse):
     header_height = libtcod.console_get_height_rect(con, 0, 0, get_menu_width(menu_name),
                                                     constants['screen_height'], inventory_title)
     options = player.inventory.items
+    # print("determine_menu_index 1"+str(menu_name)+": "+str(header_height))
+    # print("determine_menu_index 2" + str(menu_name) + ": " + str(menu_width))
     height = len(options) + header_height
 
     x = constants['screen_width'] / 2 - 50 / 2
@@ -250,9 +252,11 @@ def determine_menu_index(menu_name,con,constants,player,mouse):
     # Compute x and y offsets to convert console position to menu position
     x_offset = x  # x is the left edge of the menu
     y_offset = y + (header_height - (header_height / 5))  # The top edge of the menu
+    print("determine_menu_index height-" + str(menu_name) + ": " + str(header_height))
+    print("determine_menu_index y-" + str(menu_name) + ": " + str(y))
 
     (menu_x, menu_y) = (mouse.cx - x_offset, mouse.cy - y_offset)
     menu_y = int(math.ceil(menu_y)) - 1
     index = int(menu_y)
 
-    return index
+    return index    # print("determine_menu_index 3" + str(menu_name) + ": " + str(int(math.ceil(menu_y)) - 1))
