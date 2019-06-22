@@ -6,6 +6,7 @@ from item_probability.weapon_chances_values.axe_chances import get_axe_chances
 from item_probability.weapon_chances_values.club_chances import get_club_chances
 from item_probability.weapon_chances_values.polearm_chances import get_polearm_chances
 from item_probability.weapon_chances_values.bow_chances import get_bow_chances
+from item_probability.weapon_chances_values.throwing_chances import get_throwing_chances
 
 
 def get_weapon_chances(game_map):
@@ -19,5 +20,6 @@ def get_weapon_chances(game_map):
     chances.update(get_club_chances(game_map))
     chances.update(get_polearm_chances(game_map))
     chances.update(get_bow_chances(game_map))
+    chances.update(get_throwing_chances(game_map))
 
     return chances
