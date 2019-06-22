@@ -8,6 +8,7 @@ from item_choice_definition.weapon_choices_values.greatsword_choices import get_
 from item_choice_definition.weapon_choices_values.backsword_choices import get_backsword_choices
 from item_choice_definition.weapon_choices_values.axe_choices import get_axe_choices
 from item_choice_definition.weapon_choices_values.club_choices import get_club_choices
+from item_choice_definition.weapon_choices_values.polearm_choices import get_polearm_choices
 
 
 def get_weapon_choice(item_choice, x, y):
@@ -27,6 +28,8 @@ def get_weapon_choice(item_choice, x, y):
         item = get_axe_choices(item_choice, wp_en, x, y, disp_name)
     if item is None:
         item = get_club_choices(item_choice, wp_en, x, y, disp_name)
+    if item is None:
+        item = get_polearm_choices(item_choice, wp_en, x, y, disp_name)
     if item is None:
         equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=0)
         item = Entity(x, y, '?', libtcod.black, 'ERROR WEAPON'+item_choice, equippable=equippable_component)
