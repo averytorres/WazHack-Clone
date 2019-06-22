@@ -14,8 +14,7 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
     else:
         header_height = libtcod.console_get_height_rect(con, 0, 0, width, SCREEN_HEIGHT, header)
     height = len(options) + header_height
-    # print("menu 1" + str(menu_name) + ": " + str(header_height))
-    # print("menu 2" + str(menu_name) + ": " + str(width))
+
     # Create an off-screen console that represents the menu's window
     window = libtcod.console_new(width, height)
 
@@ -39,8 +38,6 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
 
     # Compute x and y offsets to convert console position to menu position
     x_offset = x  # x is the left edge of the menu
-    print("menu height-" + str(menu_name) + ": " + str(header_height))
-    print("menu y-" + str(menu_name) + ": " + str(y))
     y_offset = y + (header_height - (header_height/5))  # The top edge of the menu
 
     # Now we'll blit the contents of "window" to the root console
@@ -60,7 +57,6 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
             (menu_x, menu_y) = (mouse.cx - x_offset, mouse.cy - y_offset)
 
             # Check if click is within the menu and on a choice
-            # print("menu 3" + str(menu_name) + ": " + str(int(math.ceil(menu_y)) - 1))
             if menu_x >= 0 and menu_x < width and menu_y >= 0 and menu_y < height - header_height:
                 menu_y = int(math.ceil(menu_y)) - 1
                 return menu_y
