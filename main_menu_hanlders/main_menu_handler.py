@@ -7,7 +7,7 @@ from menus import main_menu, message_box
 from loader_functions.initialize_new_game import get_game_variables
 
 
-def handle_main_menu_operations(con,main_menu_background_image,constants,show_load_error_message,key,player,entities,game_map,message_log,game_state,show_main_menu):
+def handle_main_menu_operations(con,main_menu_background_image,constants,show_load_error_message,key,mouse,player,entities,game_map,message_log,game_state,show_main_menu):
     exit_game_break = False
     main_menu(con, main_menu_background_image, constants['screen_width'],
               constants['screen_height'], constants['window_title'], )
@@ -17,7 +17,7 @@ def handle_main_menu_operations(con,main_menu_background_image,constants,show_lo
 
     libtcod.console_flush()
 
-    action = handle_main_menu(key)
+    action = handle_main_menu(key,mouse)
 
     new_game = action.get('new_game')
     load_saved_game = action.get('load_game')

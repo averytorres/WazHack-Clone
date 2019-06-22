@@ -19,3 +19,4 @@ npc_hanlders/__pycache__/*
 result_consumer/__pycache__/*
 result_handlers/__pycache__/*
 .DS_Store
+venv/*

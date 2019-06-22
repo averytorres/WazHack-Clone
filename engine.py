@@ -17,9 +17,6 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
     fov_map = initialize_fov(game_map)
 
-    key = libtcod.Key()
-    mouse = libtcod.Mouse()
-
     game_state = GameStates.PLAYERS_TURN
     previous_game_state = game_state
 
@@ -60,7 +57,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
 
 
-def main():
+def main(key,mouse):
     constants = get_constants()
 
     libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
@@ -88,7 +85,7 @@ def main():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
 
         if show_main_menu:
-            exit_game_break,action,show_load_error_message,player, entities, game_map, message_log, game_state,show_main_menu = handle_main_menu_operations(con,main_menu_background_image,constants,show_load_error_message,key,player,entities,game_map,message_log,game_state,show_main_menu)
+            exit_game_break,action,show_load_error_message,player, entities, game_map, message_log, game_state,show_main_menu = handle_main_menu_operations(con,main_menu_background_image,constants,show_load_error_message,key,mouse,player,entities,game_map,message_log,game_state,show_main_menu)
             if exit_game_break:
                 break
 
@@ -100,4 +97,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    key = libtcod.Key()
+    mouse = libtcod.Mouse()
+    main(key,mouse)

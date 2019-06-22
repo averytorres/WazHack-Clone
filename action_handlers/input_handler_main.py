@@ -3,28 +3,28 @@ import tcod as libtcod
 from game_states import GameStates
 
 
-def handle_keys(key, game_state):
+def handle_keys(key,mouse,game_state):
     if game_state == GameStates.PLAYERS_TURN:
-        return handle_player_turn_keys(key)
+        return handle_player_turn_keys(key,mouse)
     elif game_state == GameStates.PLAYER_DEAD:
-        return handle_player_dead_keys(key)
+        return handle_player_dead_keys(key,mouse)
     elif game_state == GameStates.TARGETING:
-        return handle_targeting_keys(key)
+        return handle_targeting_keys(key,mouse)
     elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-        return handle_inventory_keys(key)
+        return handle_inventory_keys(key,mouse)
     elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
-        return handle_weapon_inventory_keys(key)
+        return handle_weapon_inventory_keys(key,mouse)
     elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
-        return handle_scroll_inventory_keys(key)
+        return handle_scroll_inventory_keys(key,mouse)
     elif game_state == GameStates.LEVEL_UP:
-        return handle_level_up_menu(key)
+        return handle_level_up_menu(key,mouse)
     elif game_state == GameStates.CHARACTER_SCREEN:
-        return handle_character_screen(key)
+        return handle_character_screen(key,mouse)
 
     return {}
 
 
-def handle_player_turn_keys(key):
+def handle_player_turn_keys(key,mouse):
     key_char = chr(key.c)
 
     # Movement keys
@@ -82,14 +82,14 @@ def handle_player_turn_keys(key):
     return {}
 
 
-def handle_targeting_keys(key):
+def handle_targeting_keys(key,mouse):
     if key.vk == libtcod.KEY_ESCAPE:
         return {'exit': True}
 
     return {}
 
 
-def handle_player_dead_keys(key):
+def handle_player_dead_keys(key,mouse):
     key_char = chr(key.c)
 
     if key_char == 'i':
@@ -105,7 +105,7 @@ def handle_player_dead_keys(key):
     return {}
 
 
-def handle_inventory_keys(key):
+def handle_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
     if index >= 0:
@@ -120,7 +120,7 @@ def handle_inventory_keys(key):
 
     return {}
 
-def handle_weapon_inventory_keys(key):
+def handle_weapon_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
 
@@ -136,7 +136,7 @@ def handle_weapon_inventory_keys(key):
 
     return {}
 
-def handle_scroll_inventory_keys(key):
+def handle_scroll_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
     if index >= 0:
@@ -152,7 +152,7 @@ def handle_scroll_inventory_keys(key):
     return {}
 
 
-def handle_main_menu(key):
+def handle_main_menu(key,mouse):
     key_char = chr(key.c)
 
     if key_char == 'a':
@@ -165,7 +165,7 @@ def handle_main_menu(key):
     return {}
 
 
-def handle_level_up_menu(key):
+def handle_level_up_menu(key,mouse):
     if key:
         key_char = chr(key.c)
 
@@ -179,7 +179,7 @@ def handle_level_up_menu(key):
     return {}
 
 
-def handle_character_screen(key):
+def handle_character_screen(key,mouse):
     if key.vk == libtcod.KEY_ESCAPE:
         return {'exit': True}
 
