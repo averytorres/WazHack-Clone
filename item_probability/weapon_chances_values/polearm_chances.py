@@ -5,7 +5,7 @@ def get_polearm_chances(game_map):
     wp_en = '-weapon'
 
     chances = {
-        'Staff'+wp_en                   : from_dungeon_level([[99, 0]], game_map.dungeon_level),
+        'Staff'+wp_en                   : from_dungeon_level([[1, 1]], game_map.dungeon_level),
         'Staff of Light'+wp_en          : from_dungeon_level([[2, 2]], game_map.dungeon_level),
         'Staff of Darkness' + wp_en     : from_dungeon_level([[3, 3]], game_map.dungeon_level),
         'Spear' + wp_en                 : from_dungeon_level([[4, 4]], game_map.dungeon_level),
