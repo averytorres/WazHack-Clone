@@ -3,6 +3,7 @@ from item_probability.weapon_chances_values.sword_chances import get_sword_chanc
 from item_probability.weapon_chances_values.greatsword_chances import get_greatsword_chances
 from item_probability.weapon_chances_values.backsword_chances import get_backsword_chances
 from item_probability.weapon_chances_values.axe_chances import get_axe_chances
+from item_probability.weapon_chances_values.club_chances import get_club_chances
 
 
 def get_weapon_chances(game_map):
@@ -13,5 +14,6 @@ def get_weapon_chances(game_map):
     chances.update(get_greatsword_chances(game_map))
     chances.update(get_backsword_chances(game_map))
     chances.update(get_axe_chances(game_map))
+    chances.update(get_club_chances(game_map))
 
     return chances
