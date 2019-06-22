@@ -209,13 +209,14 @@ def handle_mouse(key,mouse,game_state,constants,con,player):
 
     if mouse.lbutton_pressed:
         if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-            return handle_inventory_mouse("inventory_title",key, mouse,constants,con,player)
+            return handle_inventory_mouse(game_state,key, mouse,constants,con,player)
         else:
             return {'left_click': (x, y)}
     elif mouse.rbutton_pressed:
         return {'right_click': (x, y)}
 
     return {}
+
 
 def determine_menu_index(menu_name,con,constants,player,mouse):
     inventory_title = get_menu_title(menu_name)
