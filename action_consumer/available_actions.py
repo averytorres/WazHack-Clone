@@ -3,6 +3,7 @@ def get_available_actions(action,mouse_action):
 
     available_actions = {}
 
+    #Keyboard Actions
     move = action.get('move')
     wait = action.get('wait')
     pickup = action.get('pickup')
@@ -19,10 +20,6 @@ def get_available_actions(action,mouse_action):
     show_character_screen = action.get('show_character_screen')
     exit = action.get('exit')
     fullscreen = action.get('fullscreen')
-
-    left_click = mouse_action.get('left_click')
-    right_click = mouse_action.get('right_click')
-    mouse_inventory_index = mouse_action.get('inventory_index')
 
     available_actions.update({'move':move})
     available_actions.update({'wait':wait})
@@ -41,8 +38,15 @@ def get_available_actions(action,mouse_action):
     available_actions.update({'exit': exit})
     available_actions.update({'fullscreen': fullscreen})
 
+    #Mouse Actions
+    left_click = mouse_action.get('left_click')
+    right_click = mouse_action.get('right_click')
+    mouse_inventory_index = mouse_action.get('inventory_index')
+    mouse_weapon_inventory_index = mouse_action.get('weapon_inventory_index')
+
     available_actions.update({'left_click': left_click})
     available_actions.update({'right_click': right_click})
     available_actions.update({'inventory_index': mouse_inventory_index})
+    available_actions.update({'weapon_inventory_index': mouse_weapon_inventory_index})
 
     return available_actions

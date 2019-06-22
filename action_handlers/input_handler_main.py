@@ -121,9 +121,9 @@ def handle_inventory_keys(key,mouse):
 
     return {}
 
-def handle_inventory_mouse(menu_name,key, mouse,constants,con,player):
+def handle_inventory_mouse(game_state,key, mouse,constants,con,player):
 
-    index = determine_menu_index(menu_name,con,constants,player,mouse)
+    index = determine_menu_index(game_state,con,constants,player,mouse)
 
     if index is not None:
         return {'inventory_index': index}
@@ -137,11 +137,28 @@ def handle_inventory_mouse(menu_name,key, mouse,constants,con,player):
 
     return {}
 
+
 def handle_weapon_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
 
     if index >= 0:
+        return {'weapon_inventory_index': index}
+
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        # Alt+Enter: toggle full screen
+        return {'fullscreen': True}
+    elif key.vk == libtcod.KEY_ESCAPE:
+        # Exit the menu
+        return {'exit': True}
+
+    return {}
+
+
+def handle_weapon_inventory_mouse(game_state,key, mouse,constants,con,player):
+
+    index = determine_menu_index(game_state, con, constants, player, mouse)
+    if index is not None:
         return {'weapon_inventory_index': index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
@@ -210,6 +227,8 @@ def handle_mouse(key,mouse,game_state,constants,con,player):
     if mouse.lbutton_pressed:
         if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
             return handle_inventory_mouse(game_state,key, mouse,constants,con,player)
+        elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
+            return handle_weapon_inventory_mouse(game_state,key, mouse,constants,con,player)
         else:
             return {'left_click': (x, y)}
     elif mouse.rbutton_pressed:

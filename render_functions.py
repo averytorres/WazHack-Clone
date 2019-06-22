@@ -98,8 +98,9 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
             inventory_title = get_menu_title(game_state)
             inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,key,mouse,)
         elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
-            inventory_title = 'Press the key next to an item to equip/unequip it, or Esc to cancel.\n'
-            weapon_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
+            inventory_title = get_menu_title(game_state)
+            weapon_inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height, key,
+                           mouse, )
         elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
             inventory_title = 'Press the key next to an item to read it, or Esc to cancel.\n'
             scroll_inventory_menu(con, inventory_title, player, 50, screen_width, screen_height,key,mouse,)
