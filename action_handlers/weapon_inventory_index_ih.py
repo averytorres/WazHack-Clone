@@ -3,7 +3,7 @@ from components.equipment import EquipmentSlots
 
 
 def handle_weapon_inventory_index_input(player,weapon_inventory_index,game_state,player_turn_results,entities,fov_map):
-    player_weapon_inv = get_weapon_inventory_index_options(player)
+    player_weapon_inv = get_weapon_inventory_index_entities(player)
 
     if weapon_inventory_index >= len(player_weapon_inv):
         return player_turn_results
@@ -21,10 +21,24 @@ def handle_weapon_inventory_index_input(player,weapon_inventory_index,game_state
     return player_turn_results
 
 
-def get_weapon_inventory_index_options(player):
+def get_weapon_inventory_index_entities(player):
     player_weapon_inv = []
     for item in player.inventory.items:
         if (item.equippable is not None) and (
                 item.equippable.slot in (EquipmentSlots.MAIN_HAND, EquipmentSlots.OFF_HAND)):
             player_weapon_inv.append(item)
+    return player_weapon_inv
+
+
+def get_weapon_inventory_index_options(player):
+    player_weapon_inv = []
+    for item in player.inventory.items:
+        if (item.equippable is not None) and (
+                item.equippable.slot in (EquipmentSlots.MAIN_HAND, EquipmentSlots.OFF_HAND)):
+            if player.equipment.main_hand == item:
+                player_weapon_inv.append('{0} (on main hand)'.format(item.first_name))
+            elif player.equipment.off_hand == item:
+                player_weapon_inv.append('{0} (on off hand)'.format(item.first_name))
+            else:
+                player_weapon_inv.append(item.first_name)
     return player_weapon_inv

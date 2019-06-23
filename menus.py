@@ -1,8 +1,10 @@
 import tcod as libtcod
 import math
 from menu_info.menu_details import get_main_menu_options
-from components.equipment import EquipmentSlots
 from menu_info.menu_details import get_menu_width, get_menu_title, get_menu_height
+from action_handlers.quaff_inventory_index_ih import get_quaff_inventory_index_options
+from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
+from action_handlers.weapon_inventory_index_ih import get_weapon_inventory_index_options
 
 
 def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,menu_name):
@@ -173,16 +175,7 @@ def weapon_inventory_menu(con, header, player, inventory_width, screen_width, sc
     if len(player.inventory.items) == 0:
         options = ['Weapon inventory is empty.']
     else:
-        options = []
-
-        for item in player.inventory.items:
-            if (item.equippable is not None) and (item.equippable.slot in (EquipmentSlots.MAIN_HAND, EquipmentSlots.OFF_HAND)):
-                if player.equipment.main_hand == item:
-                    options.append('{0} (on main hand)'.format(item.first_name))
-                elif player.equipment.off_hand == item:
-                    options.append('{0} (on off hand)'.format(item.first_name))
-                else:
-                    options.append(item.first_name)
+        options = get_weapon_inventory_index_options(player)
 
     menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
 
@@ -190,13 +183,19 @@ def weapon_inventory_menu(con, header, player, inventory_width, screen_width, sc
 def scroll_inventory_menu(con, header, player, inventory_width, screen_width, screen_height,key, mouse,game_state):
     # show a menu with each scroll item of the inventory as an option
     if len(player.inventory.items) == 0:
-        options = ['Weapon inventory is empty.']
+        options = ['Scroll inventory is empty.']
     else:
-        options = []
+        options = get_scroll_inventory_index_options(player)
 
-        for item in player.inventory.items:
-            if (item.item.use_function is not None) and (('SCROLL' in (item.first_name.upper()) or ('BOOK' in (item.first_name.upper())))):
-                    options.append(item.first_name)
+    menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
+
+
+def quaff_inventory_menu(con, header, player, inventory_width, screen_width, screen_height,key, mouse,game_state):
+    # show a menu with each scroll item of the inventory as an option
+    if len(player.inventory.items) == 0:
+        options = ['Quaff inventory is empty.']
+    else:
+        options = get_quaff_inventory_index_options(player)
 
     menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
 
