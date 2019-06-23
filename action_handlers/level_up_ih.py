@@ -1,3 +1,5 @@
+from global_operations import colorize_text_custom
+
 
 def handle_level_up_input(player,level_up,previous_game_state):
     if level_up == 'hp':
@@ -25,7 +27,15 @@ def get_level_up_key(index):
 
 
 def get_level_up_index_options(player):
-    options = ['Constitution (+20 HP, from {0})'.format(player.fighter.max_hp),
-               'Strength (+1 attack, from {0})'.format(player.fighter.power),
-               'Agility (+1 defense, from {0})'.format(player.fighter.defense)]
+    r, g, b = 102, 255, 103
+    options = []
+    
+    constitution = 'Constitution ' + colorize_text_custom('(+20 HP, from {0})', r, g, b)
+    strength = 'Strength ' + colorize_text_custom('(+1 attack, from {0})', r, g, b)
+    agility = 'Agility ' + colorize_text_custom('(+1 defense, from {0})', r, g, b)
+
+    options.append(constitution.format(player.fighter.max_hp))
+    options.append(strength.format(player.fighter.power))
+    options.append(agility.format(player.fighter.defense))
+
     return options

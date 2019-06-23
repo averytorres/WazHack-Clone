@@ -76,6 +76,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     libtcod.console_set_color_control(libtcod.COLCTRL_1, libtcod.light_gray, libtcod.black) #Player message highlighting
     libtcod.console_set_color_control(libtcod.COLCTRL_3, libtcod.dark_red, libtcod.black)  #NPC Hit message highlighting
     libtcod.console_set_color_control(libtcod.COLCTRL_4, libtcod.darker_red, libtcod.black)  # NPC Hit message highlighting
+    libtcod.console_set_color_control(libtcod.COLCTRL_5, libtcod.light_flame,libtcod.black)  # Menu Coloring
     y = 1
     for message in message_log.messages:
         libtcod.console_set_default_foreground(panel, message.color)

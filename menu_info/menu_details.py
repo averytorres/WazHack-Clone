@@ -25,7 +25,7 @@ def get_menu_width(menu_name):
     menu_width.update({GameStates.SHOW_WEAPON_INVENTORY: 50})
     menu_width.update({GameStates.SHOW_SCROLL_INVENTORY: 50})
     menu_width.update({GameStates.SHOW_QUAFF_INVENTORY: 50})
-    menu_width.update({GameStates.LEVEL_UP: 50})
+    menu_width.update({GameStates.LEVEL_UP: 40})
 
     menu_width.update({GameStates.PLAYERS_TURN: 24})
     menu_width.update({None: 24})

@@ -21,3 +21,4 @@ result_consumer/__pycache__/*
 result_handlers/__pycache__/*
 .DS_Store
 venv/*
+venv/lib/python3.7/site-packages/tcod/__pycache__/*

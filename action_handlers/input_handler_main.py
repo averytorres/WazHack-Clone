@@ -224,7 +224,6 @@ def handle_quaff_inventory_keys(key,mouse):
         return {'fullscreen': True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        print("here")
         return {'exit': True}
 
     return {}

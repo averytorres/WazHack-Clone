@@ -5,10 +5,12 @@ from menu_info.menu_details import get_menu_width, get_menu_title, get_menu_heig
 from action_handlers.quaff_inventory_index_ih import get_quaff_inventory_index_options
 from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
 from action_handlers.weapon_inventory_index_ih import get_weapon_inventory_index_options
+from global_operations import colorize_text, colorize_text_custom
 
 
 def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,menu_name):
-
+    width += 5
+    header = colorize_text(header, libtcod.COLCTRL_2)
     if len(options) > 26:
         raise ValueError("Cannot have a menu with more than 26 options")
 
@@ -17,21 +19,83 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
         header_height = 0
     else:
         header_height = libtcod.console_get_height_rect(con, 0, 0, width, SCREEN_HEIGHT, header)
+
+    header_height +=1
     height = len(options) + header_height
+    height += 8
+
     # Create an off-screen console that represents the menu's window
     window = libtcod.console_new(width, height)
 
     # Print the header, with auto-wrap
     libtcod.console_set_default_foreground(window, libtcod.white)
-    libtcod.console_print_rect_ex(window, 0, 0, width, height, libtcod.BKGND_NONE, libtcod.LEFT, header)
+
+    border_corner = "*"
+    border_top_bottom = "="
+    border_left_right = "|"
+    menu_border_tb=border_corner
+    for x in range(width-3):
+        menu_border_tb = str(menu_border_tb) + str(border_top_bottom)
+
+    menu_border_tb = str(menu_border_tb) + str(border_corner)
+    r,g,b = 255,102,102
+    menu_border_tb = colorize_text_custom(menu_border_tb, r,g,b)
+    libtcod.console_print_rect_ex(window, 0, 0, width, height, libtcod.BKGND_NONE, libtcod.LEFT, menu_border_tb)
+    libtcod.console_print_ex(window, 0, 1, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, width-2, 1, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, 2, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, width-2, 2, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, 3, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, width-2, 3, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, height-3, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, width-2, height - 3, libtcod.BKGND_NONE, libtcod.LEFT,colorize_text_custom(border_left_right, r, g, b))
+    # libtcod.console_print_ex(window, 0, len(options) + header_height, libtcod.BKGND_NONE, colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, len(options) + header_height, libtcod.BKGND_NONE, libtcod.LEFT,colorize_text(border_left_right, libtcod.COLCTRL_5))
+    libtcod.console_print_ex(window, width-2, len(options) + header_height, libtcod.BKGND_NONE, libtcod.LEFT,colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, 4, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, width - 2, 4, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, 5, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, width - 2, 5, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text(border_left_right, libtcod.COLCTRL_5))
+    libtcod.console_print_rect_ex(window, 2, 3, width - 4, height, libtcod.BKGND_NONE, libtcod.LEFT, header)
+    libtcod.console_print_rect_ex(window, 0, len(options) + header_height + 1, width, height, libtcod.BKGND_NONE,
+                                  libtcod.LEFT, "")
+    libtcod.console_print_rect_ex(window, 0, len(options) + header_height + 2, width, height, libtcod.BKGND_NONE,
+                                  libtcod.LEFT, "")
+    libtcod.console_print_rect_ex(window, 0, len(options) + header_height + 5, width, height, libtcod.BKGND_NONE,
+                                  libtcod.LEFT, menu_border_tb)
+
+    libtcod.console_print_ex(window, 0, len(options) + header_height+3, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text(border_left_right, libtcod.COLCTRL_5))
+    libtcod.console_print_ex(window, width - 2, len(options) + header_height+3, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, len(options) + header_height + 4, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text(border_left_right, libtcod.COLCTRL_5))
+    libtcod.console_print_ex(window, width - 2, len(options) + header_height + 4, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, 0, header_height + 2, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text_custom(border_left_right, r, g, b))
+    libtcod.console_print_ex(window, width - 2, header_height + 2, libtcod.BKGND_NONE, libtcod.LEFT,
+                             colorize_text_custom(border_left_right, r, g, b))
+
 
     # Print all the options
     y = header_height
     letter_index = ord("a")
 
+    libtcod.console_print_rect_ex(window, 0, len(options) + header_height, width, height, libtcod.BKGND_NONE,
+                                  libtcod.LEFT, "")
+    y = header_height + 3
     for option_text in options:
-        text = "({0}) {1}".format(chr(letter_index), option_text)
-        libtcod.console_print_ex(window, 0, y, libtcod.BKGND_NONE, libtcod.LEFT, text)
+        colorize_letter = colorize_text_custom('({0})', 102,255,204)
+        text = colorize_letter+" {1}"
+        text = text.format(chr(letter_index), option_text)
+        libtcod.console_print_ex(window, 0, y, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+        libtcod.console_print_ex(window, width-2, y, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(border_left_right, r, g, b))
+        libtcod.console_print_ex(window, 2, y, libtcod.BKGND_NONE, libtcod.LEFT, text)
         y += 1
         letter_index += 1
 
@@ -49,6 +113,7 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
     x = int(x)
     y = int(y)
     libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
+
 
     while True:
         # Present the root console to the player and wait for a key press
@@ -161,9 +226,13 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
 
         for item in player.inventory.items:
             if player.equipment.main_hand == item:
-                options.append('{0} (on main hand)'.format(item.first_name))
+                wep_qual = colorize_text('(on main hand)', libtcod.COLCTRL_3)
+                wep_qual = '{0} ' + wep_qual
+                options.append(wep_qual.format(item.first_name))
             elif player.equipment.off_hand == item:
-                options.append('{0} (on off hand)'.format(item.first_name))
+                wep_qual = colorize_text('(on off hand)', libtcod.COLCTRL_3)
+                wep_qual = '{0} ' + wep_qual
+                options.append(wep_qual.format(item.first_name))
             else:
                 options.append(item.first_name)
 
