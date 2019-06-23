@@ -5,7 +5,7 @@ from components.equipment import EquipmentSlots
 def handle_weapon_inventory_index_input(player,weapon_inventory_index,game_state,player_turn_results,entities,fov_map):
     player_weapon_inv = get_weapon_inventory_index_options(player)
 
-    if (weapon_inventory_index >= len(player_weapon_inv)):
+    if weapon_inventory_index >= len(player_weapon_inv):
         return player_turn_results
     item = player_weapon_inv[weapon_inventory_index]
 
