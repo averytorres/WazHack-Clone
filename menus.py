@@ -172,30 +172,27 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
 
 def weapon_inventory_menu(con, header, player, inventory_width, screen_width, screen_height,key, mouse,game_state):
     # show a menu with each weapon item of the inventory as an option
-    if len(get_weapon_inventory_index_options(player)) == 0:
+    options = get_weapon_inventory_index_options(player)
+    if len(options) == 0:
         options = ['Weapon inventory is empty.']
-    else:
-        options = get_weapon_inventory_index_options(player)
 
     menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
 
 
 def scroll_inventory_menu(con, header, player, inventory_width, screen_width, screen_height,key, mouse,game_state):
     # show a menu with each scroll item of the inventory as an option
-    if len(get_scroll_inventory_index_options(player)) == 0:
+    options = get_scroll_inventory_index_options(player)
+    if len(options) == 0:
         options = ['Scroll inventory is empty.']
-    else:
-        options = get_scroll_inventory_index_options(player)
 
     menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
 
 
 def quaff_inventory_menu(con, header, player, inventory_width, screen_width, screen_height,key, mouse,game_state):
     # show a menu with each scroll item of the inventory as an option
-    if len(get_quaff_inventory_index_options(player)) == 0:
+    options = get_quaff_inventory_index_options(player)
+    if len(options) == 0:
         options = ['Quaff inventory is empty.']
-    else:
-        options = get_quaff_inventory_index_options(player)
 
     menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
 
