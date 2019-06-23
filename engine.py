@@ -2,7 +2,6 @@ import tcod as libtcod
 
 from death_functions import kill_player
 from fov_functions import initialize_fov, recompute_fov
-from game_messages import Message
 from game_states import GameStates
 from loader_functions.initialize_new_game import get_constants
 from render_functions import clear_all, render_all
