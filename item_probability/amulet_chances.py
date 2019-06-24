@@ -6,7 +6,7 @@ def get_amulet_chances(game_map):
 
     chances = {}
 
-    chances.update({'Amulet of Dweomery' + wp_en: from_dungeon_level([[99, 0]], game_map.dungeon_level)})
+    chances.update({'Amulet of Dweomery' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
     chances.update({'Amulet of ESP' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
     chances.update({'Amulet of Life Saving' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
     chances.update({'Amulet of magical breathing' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
