@@ -4,6 +4,7 @@ from item_choice_definition.shield_choices import get_shield_choice
 from item_choice_definition.scroll_choices import get_scroll_choice
 from item_choice_definition.amulet_choices import get_amulet_choice
 from item_choice_definition.chest_armor_choices import get_chest_armor_choice
+from item_choice_definition.head_armor_choices import get_head_armor_choice
 
 
 def get_item_choice(item_choice, x, y):
@@ -22,6 +23,9 @@ def get_item_choice(item_choice, x, y):
 
     elif 'AMULET'.upper() in item_choice.upper():
         item = get_amulet_choice(item_choice, x, y)
+
+    elif 'HEAD_ARMOR'.upper() in item_choice.upper():
+        item = get_head_armor_choice(item_choice, x, y)
 
     elif 'CHEST_ARMOR'.upper() in item_choice.upper():
         item = get_chest_armor_choice(item_choice, x, y)
