@@ -22,3 +22,5 @@ result_handlers/__pycache__/*
 .DS_Store
 venv/*
 venv/lib/python3.7/site-packages/tcod/__pycache__/*
+venv/lib/python3.7/site-packages/numpy/__pycache__/*
+*.pyc
