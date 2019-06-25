@@ -6,6 +6,7 @@ from item_choice_definition.amulet_choices import get_amulet_choice
 from item_choice_definition.chest_armor_choices import get_chest_armor_choice
 from item_choice_definition.head_armor_choices import get_head_armor_choice
 from item_choice_definition.hand_armor_choices import get_hand_armor_choice
+from item_choice_definition.foot_armor_choices import get_foot_armor_choice
 from item_choice_definition.eye_choices import get_eye_choice
 from item_choice_definition.finger_choices import get_finger_choice
 
@@ -38,6 +39,9 @@ def get_item_choice(item_choice, x, y):
 
     elif 'HAND_ARMOR'.upper() in item_choice.upper():
         item = get_hand_armor_choice(item_choice, x, y)
+
+    elif 'FOOT_ARMOR'.upper() in item_choice.upper():
+        item = get_foot_armor_choice(item_choice, x, y)
 
     elif 'FINGER'.upper() in item_choice.upper():
         item = get_finger_choice(item_choice, x, y)
