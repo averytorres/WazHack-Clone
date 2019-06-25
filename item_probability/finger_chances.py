@@ -6,7 +6,7 @@ def get_finger_chances(game_map):
 
     chances = {}
 
-    chances.update({'Ring of Hunger' + wp_en: from_dungeon_level([[99, 0]], game_map.dungeon_level)})
+    chances.update({'Ring of Hunger' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
     chances.update({'Ring of Adornment' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
     chances.update({'Ring of Levitation' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
     chances.update({'Ring of Invisibility' + wp_en: from_dungeon_level([[1, 1]], game_map.dungeon_level)})
