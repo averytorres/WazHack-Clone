@@ -12,9 +12,8 @@ class EquipmentSlots(Enum):
     LEFT_EAR = 8
     FACE = 9
     CHEST = 10
-    RIGHT_HAND_FINGERS = 11
-    LEFT_HAND_FINGERS = 12
-    HANDS = 13
-    LEGS = 14
-    FEET = 15
-    BACK = 16
+    FINGERS = 11
+    HANDS = 12
+    LEGS = 13
+    FEET = 14
+    BACK = 15
