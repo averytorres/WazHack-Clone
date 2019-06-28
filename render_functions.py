@@ -2,9 +2,10 @@ import tcod as libtcod
 
 from enum import Enum
 from game_states import GameStates
-from menus import character_screen, inventory_menu, weapon_inventory_menu, scroll_inventory_menu, level_up_menu, quaff_inventory_menu
+from menus import character_screen, inventory_menu, weapon_inventory_menu, scroll_inventory_menu, level_up_menu, quaff_inventory_menu, armor_inventory_menu
 from menu_info.menu_details import get_menu_title, get_menu_width
 from action_handlers.level_up_ih import get_level_up_index_options
+from action_handlers.inventory_index_ih import get_inventory_states
 
 class RenderOrder(Enum):
     STAIRS = 1
@@ -94,13 +95,17 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 
     libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
 
-    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_WEAPON_INVENTORY, GameStates.SHOW_SCROLL_INVENTORY, GameStates.SHOW_QUAFF_INVENTORY):
+    if (game_state in (get_inventory_states())):
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = get_menu_title(game_state)
             inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,key,mouse,game_state)
         elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
             inventory_title = get_menu_title(game_state)
             weapon_inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height, key,
+                           mouse,game_state )
+        elif game_state == GameStates.SHOW_ARMOR_INVENTORY:
+            inventory_title = get_menu_title(game_state)
+            armor_inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height, key,
                            mouse,game_state )
         elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
             inventory_title = get_menu_title(game_state)
@@ -112,6 +117,9 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
             quaff_inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,
                                   key,
                                   mouse,game_state)
+        elif game_state == GameStates.CHARACTER_SCREEN:
+            char_title = get_menu_title(game_state)
+            character_screen(char_title,player, 30, get_menu_width(game_state), screen_width, screen_height, key, mouse, game_state)
         else:
             inventory_title = get_menu_title(game_state)
             inventory_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,key,mouse,game_state)
@@ -121,8 +129,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
         options = get_level_up_index_options(player)
         level_up_menu(con, inventory_title, player, get_menu_width(game_state), screen_width, screen_height,key,mouse,game_state,options)
 
-    elif game_state == GameStates.CHARACTER_SCREEN:
-        character_screen(player, 30, 10, screen_width, screen_height,key,mouse,game_state)
+
 
 
 def clear_all(con, entities):

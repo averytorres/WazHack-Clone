@@ -18,7 +18,7 @@ def get_foot_armor_choice(item_choice, x, y):
     suffix = '-foot_armor'
     display_icon = 'b'
     display_color = libtcod.darker_amber
-    equipment_slot = EquipmentSlots.HEAD
+    equipment_slot = EquipmentSlots.FEET
 
     disp_name = item_choice.replace(suffix,"")
     item = None

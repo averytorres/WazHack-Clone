@@ -3,8 +3,10 @@ import math
 from menu_info.menu_details import get_main_menu_options
 from menu_info.menu_details import get_menu_width, get_menu_title, get_menu_height
 from action_handlers.quaff_inventory_index_ih import get_quaff_inventory_index_options
-from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
 from action_handlers.weapon_inventory_index_ih import get_weapon_inventory_index_options
+from action_handlers.armor_inventory_index_ih import get_armor_inventory_index_options
+from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
+from action_handlers.inventory_index_ih import get_inventory_index_options
 from global_operations import colorize_text, colorize_text_custom
 
 
@@ -222,19 +224,7 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
     if len(player.inventory.items) == 0:
         options = ['Inventory is empty.']
     else:
-        options = []
-
-        for item in player.inventory.items:
-            if player.equipment.main_hand == item:
-                wep_qual = colorize_text('(on main hand)', libtcod.COLCTRL_3)
-                wep_qual = '{0} ' + wep_qual
-                options.append(wep_qual.format(item.first_name))
-            elif player.equipment.off_hand == item:
-                wep_qual = colorize_text('(on off hand)', libtcod.COLCTRL_3)
-                wep_qual = '{0} ' + wep_qual
-                options.append(wep_qual.format(item.first_name))
-            else:
-                options.append(item.first_name)
+        options = get_inventory_index_options(player)
 
     menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
 
@@ -244,6 +234,15 @@ def weapon_inventory_menu(con, header, player, inventory_width, screen_width, sc
     options = get_weapon_inventory_index_options(player)
     if len(options) == 0:
         options = ['Weapon inventory is empty.']
+
+    menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
+
+
+def armor_inventory_menu(con, header, player, inventory_width, screen_width, screen_height,key, mouse,game_state):
+    # show a menu with each weapon item of the inventory as an option
+    options = get_armor_inventory_index_options(player)
+    if len(options) == 0:
+        options = ['Armor inventory is empty.']
 
     menu(con, header, options, inventory_width, screen_width, screen_height,key, mouse,game_state)
 
@@ -281,13 +280,13 @@ def level_up_menu(con, header, player, menu_width, screen_width, screen_height,k
     menu(con, header, options, menu_width, screen_width, screen_height,key, mouse,game_state)
 
 
-def character_screen(player, character_screen_width, character_screen_height, screen_width, screen_height,key, mouse,game_state):
+def character_screen(title, player, character_screen_width, character_screen_height, screen_width, screen_height,key, mouse,game_state):
     window = libtcod.console_new(character_screen_width, character_screen_height)
 
     libtcod.console_set_default_foreground(window, libtcod.white)
 
     libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Character Information')
+                                  libtcod.LEFT, title)
     libtcod.console_print_rect_ex(window, 0, 2, character_screen_width, character_screen_height, libtcod.BKGND_NONE,
                                   libtcod.LEFT, 'Level: {0}'.format(player.level.current_level))
     libtcod.console_print_rect_ex(window, 0, 3, character_screen_width, character_screen_height, libtcod.BKGND_NONE,

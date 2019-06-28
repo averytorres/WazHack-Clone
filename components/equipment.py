@@ -3,7 +3,7 @@ from equipment_slots import EquipmentSlots
 
 class Equipment:
     def __init__(self, main_hand=None, off_hand=None, head=None, neck_1=None, neck_2=None, eyes=None,
-                 right_ear=None, left_ear=None, face=None, chest=None, right_hand_fingers=None, left_hand_fingers=None,
+                 right_ear=None, left_ear=None, face=None, chest=None, fingers=None,
                  hands=None, legs=None, feet=None, back=None):
         self.main_hand = main_hand
         self.off_hand = off_hand
@@ -15,8 +15,7 @@ class Equipment:
         self.left_ear = left_ear
         self.face = face
         self.chest = chest
-        self.right_hand_fingers = right_hand_fingers
-        self.left_hand_fingers = left_hand_fingers
+        self.fingers = fingers
         self.hands = hands
         self.legs = legs
         self.feet = feet

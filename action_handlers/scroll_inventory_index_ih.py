@@ -4,9 +4,9 @@ from game_states import GameStates
 def handle_scroll_inventory_index_input(player,scroll_inventory_index,game_state,player_turn_results,entities,fov_map):
     player_scroll_inv = get_scroll_inventory_index_entities(player)
 
-    if(scroll_inventory_index >= len(player_scroll_inv)):
+    if(scroll_inventory_index >= len(player_scroll_inv)) or len(player_scroll_inv) == 0:
         return player_turn_results
-    item = player_scroll_inv[scroll_inventory_index]
+    item = player_scroll_inv[int(scroll_inventory_index)]
 
     if game_state == GameStates.SHOW_INVENTORY:
         player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))

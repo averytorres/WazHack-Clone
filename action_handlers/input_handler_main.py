@@ -3,6 +3,7 @@ import tcod as libtcod
 from game_states import GameStates
 from menu_info.menu_details import get_menu_title, get_menu_width, get_main_menu_key, get_menu_height
 from action_handlers.weapon_inventory_index_ih import get_weapon_inventory_index_options
+from action_handlers.armor_inventory_index_ih import get_armor_inventory_index_options
 from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
 from action_handlers.quaff_inventory_index_ih import get_quaff_inventory_index_options
 from action_handlers.level_up_ih import get_level_up_index_options
@@ -21,6 +22,8 @@ def handle_keys(key,mouse,game_state):
         return handle_inventory_keys(key,mouse)
     elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
         return handle_weapon_inventory_keys(key,mouse)
+    elif game_state == GameStates.SHOW_ARMOR_INVENTORY:
+        return handle_armor_inventory_keys(key,mouse)
     elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
         return handle_scroll_inventory_keys(key,mouse)
     elif game_state == GameStates.SHOW_QUAFF_INVENTORY:
@@ -64,6 +67,9 @@ def handle_player_turn_keys(key,mouse):
 
     elif key_char == 'w':
         return {'show_weapon_inventory': True}
+
+    elif key_char == 'a':
+        return {'show_armor_inventory': True}
 
     elif key_char == 'r':
         return {'show_scroll_inventory': True}
@@ -170,6 +176,37 @@ def handle_weapon_inventory_mouse(game_state,options,key, mouse,constants,con,pl
     index = determine_menu_index(game_state,options, con, constants, player, mouse)
     if index is not None:
         return {'weapon_inventory_index_mouse': index}
+
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        # Alt+Enter: toggle full screen
+        return {'fullscreen': True}
+    elif key.vk == libtcod.KEY_ESCAPE:
+        # Exit the menu
+        return {'exit': True}
+
+    return {}
+
+
+def handle_armor_inventory_keys(key,mouse):
+    index = key.c - ord('a')
+    if index >= 0:
+        return {'armor_inventory_index': index}
+
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        # Alt+Enter: toggle full screen
+        return {'fullscreen': True}
+    elif key.vk == libtcod.KEY_ESCAPE:
+        # Exit the menu
+        return {'exit': True}
+
+    return {}
+
+
+def handle_armor_inventory_mouse(game_state,options,key, mouse,constants,con,player):
+
+    index = determine_menu_index(game_state,options, con, constants, player, mouse)
+    if index is not None:
+        return {'armor_inventory_index_mouse': index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
@@ -300,6 +337,9 @@ def handle_mouse(key,mouse,game_state,constants,con,player):
         elif game_state == GameStates.SHOW_WEAPON_INVENTORY:
             options = get_weapon_inventory_index_options(player)
             return handle_weapon_inventory_mouse(game_state,options,key, mouse,constants,con,player)
+        elif game_state == GameStates.SHOW_ARMOR_INVENTORY:
+            options = get_armor_inventory_index_options(player)
+            return handle_armor_inventory_mouse(game_state,options,key, mouse,constants,con,player)
         elif game_state == GameStates.SHOW_SCROLL_INVENTORY:
             options = get_scroll_inventory_index_options(player)
             return handle_scroll_inventory_mouse(game_state,options,key, mouse,constants,con,player)

@@ -4,6 +4,7 @@ from game_states import GameStates
 from action_handlers.input_handler_main import handle_keys, handle_mouse
 from action_handlers.inventory_index_ih import handle_inventory_index_input
 from action_handlers.weapon_inventory_index_ih import handle_weapon_inventory_index_input, get_weapon_inventory_index_options
+from action_handlers.armor_inventory_index_ih import handle_armor_inventory_index_input, get_armor_inventory_index_options
 from action_handlers.scroll_inventory_index_ih import handle_scroll_inventory_index_input, get_scroll_inventory_index_options
 from action_handlers.quaff_inventory_index_ih import handle_quaff_inventory_index_input, get_quaff_inventory_index_options
 from action_handlers.take_stairs_down_ih import handle_take_stairs_down_input
@@ -46,6 +47,10 @@ def consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute
         previous_game_state = game_state
         game_state = GameStates.SHOW_WEAPON_INVENTORY
 
+    if avail_actions['show_armor_inventory']:
+        previous_game_state = game_state
+        game_state = GameStates.SHOW_ARMOR_INVENTORY
+
     if avail_actions['show_scroll_inventory']:
         previous_game_state = game_state
         game_state = GameStates.SHOW_SCROLL_INVENTORY
@@ -78,6 +83,19 @@ def consume_actions(key,mouse,game_state,player,game_map, entities,fov_recompute
         else:
             inventory_index = avail_actions[curr_avail_action_check+'_mouse']
         player_turn_results = handle_weapon_inventory_index_input(player, inventory_index,
+                                                                  game_state, player_turn_results, entities, fov_map)
+
+    curr_avail_action_check = 'armor_inventory_index'
+    if ((avail_actions[curr_avail_action_check] is not None and avail_actions[curr_avail_action_check] < len(
+            get_armor_inventory_index_options(player)))
+        or (avail_actions[curr_avail_action_check + '_mouse'] is not None and avail_actions[
+                curr_avail_action_check + '_mouse'] < len(player.inventory.items))) \
+            and previous_game_state != GameStates.PLAYER_DEAD:
+        if avail_actions[curr_avail_action_check] is not None:
+            inventory_index = avail_actions[curr_avail_action_check]
+        else:
+            inventory_index = avail_actions[curr_avail_action_check + '_mouse']
+        player_turn_results = handle_armor_inventory_index_input(player, inventory_index,
                                                                   game_state, player_turn_results, entities, fov_map)
 
     curr_avail_action_check = 'scroll_inventory_index'

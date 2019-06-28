@@ -4,9 +4,9 @@ from game_states import GameStates
 def handle_quaff_inventory_index_input(player,quaff_inventory_index,game_state,player_turn_results,entities,fov_map):
     player_quaff_inv = get_quaff_inventory_index_entities(player)
 
-    if(quaff_inventory_index >= len(player_quaff_inv)):
+    if(quaff_inventory_index >= len(player_quaff_inv)) or len(player_quaff_inv) == 0:
         return player_turn_results
-    item = player_quaff_inv[quaff_inventory_index]
+    item = player_quaff_inv[int(quaff_inventory_index)]
 
     if game_state == GameStates.SHOW_INVENTORY:
         player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
