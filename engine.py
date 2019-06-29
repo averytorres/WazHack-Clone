@@ -3,6 +3,7 @@ import tcod as libtcod
 from death_functions import kill_player
 from fov_functions import initialize_fov, recompute_fov
 from game_states import GameStates
+from game_messages import Message
 from loader_functions.initialize_new_game import get_constants
 from render_functions import clear_all, render_all
 from action_consumer.action_consumer import consume_actions
@@ -25,6 +26,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
 
         if fov_recompute:
+            message_log.add_message(Message('MESSAGE SCROLLING', libtcod.black))  # message log scrolling
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'],
                           constants['fov_algorithm'])
 
