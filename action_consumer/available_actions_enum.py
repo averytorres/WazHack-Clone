@@ -3,7 +3,7 @@
 from enum import Enum
 
 
-class AvailableActionsEnum(Enum):
+class Action(Enum):
 
     # Keyboard Actions
     NEW_GAME = -1

@@ -8,7 +8,7 @@ from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index
 from action_handlers.quaff_inventory_index_ih import get_quaff_inventory_index_options
 from action_handlers.level_up_ih import get_level_up_index_options
 from action_handlers.level_up_ih import get_level_up_key
-from action_consumer.available_actions_enum import AvailableActionsEnum
+from action_consumer.available_actions_enum import Action
 import math
 
 
@@ -42,60 +42,60 @@ def handle_player_turn_keys(key,mouse):
 
     # Movement keys
     if key.vk == libtcod.KEY_UP or key_char == 'k':
-        return {AvailableActionsEnum.MOVE: (0, -1)}
+        return {Action.MOVE: (0, -1)}
     elif key.vk == libtcod.KEY_DOWN or key_char == 'j':
-        return {AvailableActionsEnum.MOVE: (0, 1)}
+        return {Action.MOVE: (0, 1)}
     elif key.vk == libtcod.KEY_LEFT or key_char == 'h':
-        return {AvailableActionsEnum.MOVE: (-1, 0)}
+        return {Action.MOVE: (-1, 0)}
     elif key.vk == libtcod.KEY_RIGHT or key_char == 'l':
-        return {AvailableActionsEnum.MOVE: (1, 0)}
+        return {Action.MOVE: (1, 0)}
     elif key_char == 'y':
-        return {AvailableActionsEnum.MOVE: (-1, -1)}
+        return {Action.MOVE: (-1, -1)}
     elif key_char == 'u':
-        return {AvailableActionsEnum.MOVE: (1, -1)}
+        return {Action.MOVE: (1, -1)}
     elif key_char == 'b':
-        return {AvailableActionsEnum.MOVE: (-1, 1)}
+        return {Action.MOVE: (-1, 1)}
     elif key_char == 'n':
-        return {AvailableActionsEnum.MOVE: (1, 1)}
+        return {Action.MOVE: (1, 1)}
     elif key.vk == libtcod.KEY_TAB:
-        return {AvailableActionsEnum.WAIT: True}
+        return {Action.WAIT: True}
 
     if key_char == 'g':
-        return {AvailableActionsEnum.PICKUP: True}
+        return {Action.PICKUP: True}
 
     elif key_char == 'i':
-        return {AvailableActionsEnum.SHOW_INVENTORY: True}
+        return {Action.SHOW_INVENTORY: True}
 
     elif key_char == 'w':
-        return {AvailableActionsEnum.SHOW_WEAPON_INVENTORY: True}
+        return {Action.SHOW_WEAPON_INVENTORY: True}
 
     elif key_char == 'a':
-        return {AvailableActionsEnum.SHOW_ARMOR_INVENTORY: True}
+        return {Action.SHOW_ARMOR_INVENTORY: True}
 
     elif key_char == 'r':
-        return {AvailableActionsEnum.SHOW_SCROLL_INVENTORY: True}
+        return {Action.SHOW_SCROLL_INVENTORY: True}
 
     elif key_char == 'q':
-        return {AvailableActionsEnum.SHOW_QUAFF_INVENTORY: True}
+        return {Action.SHOW_QUAFF_INVENTORY: True}
 
     elif key_char == 'd':
-        return {AvailableActionsEnum.DROP_INVENTORY: True}
+        return {Action.DROP_INVENTORY: True}
 
     elif key_char == '.':
-        return {AvailableActionsEnum.TAKE_STAIRS_DOWN: True}
+        return {Action.TAKE_STAIRS_DOWN: True}
 
     elif key_char == ',':
-        return {AvailableActionsEnum.TAKE_STAIRS_UP: True}
+        return {Action.TAKE_STAIRS_UP: True}
 
     elif key_char == 'c':
-        return {AvailableActionsEnum.SHOW_CHARACTER_SCREEN: True}
+        return {Action.SHOW_CHARACTER_SCREEN: True}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the game
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     # No key was pressed
     return {}
@@ -103,7 +103,7 @@ def handle_player_turn_keys(key,mouse):
 
 def handle_targeting_keys(key,mouse):
     if key.vk == libtcod.KEY_ESCAPE:
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -112,14 +112,14 @@ def handle_player_dead_keys(key,mouse):
     key_char = chr(key.c)
 
     if key_char == 'i':
-        return {AvailableActionsEnum.SHOW_INVENTORY: True}
+        return {Action.SHOW_INVENTORY: True}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -128,14 +128,14 @@ def handle_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
     if index >= 0:
-        return {AvailableActionsEnum.INVENTORY_INDEX: index}
+        return {Action.INVENTORY_INDEX: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -144,14 +144,14 @@ def handle_inventory_mouse(game_state,options,key, mouse,constants,con,player):
     index = determine_menu_index(game_state,options,con,constants,player,mouse)
 
     if index is not None:
-        return {AvailableActionsEnum.INVENTORY_INDEX_MOUSE: index}
+        return {Action.INVENTORY_INDEX_MOUSE: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -160,14 +160,14 @@ def handle_weapon_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
     if index >= 0:
-        return {AvailableActionsEnum.WEAPON_INVENTORY_INDEX: index}
+        return {Action.WEAPON_INVENTORY_INDEX: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -176,14 +176,14 @@ def handle_weapon_inventory_mouse(game_state,options,key, mouse,constants,con,pl
 
     index = determine_menu_index(game_state,options, con, constants, player, mouse)
     if index is not None:
-        return {AvailableActionsEnum.WEAPON_INVENTORY_INDEX_MOUSE: index}
+        return {Action.WEAPON_INVENTORY_INDEX_MOUSE: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -191,14 +191,14 @@ def handle_weapon_inventory_mouse(game_state,options,key, mouse,constants,con,pl
 def handle_armor_inventory_keys(key,mouse):
     index = key.c - ord('a')
     if index >= 0:
-        return {AvailableActionsEnum.ARMOR_INVENTORY_INDEX: index}
+        return {Action.ARMOR_INVENTORY_INDEX: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -207,14 +207,14 @@ def handle_armor_inventory_mouse(game_state,options,key, mouse,constants,con,pla
 
     index = determine_menu_index(game_state,options, con, constants, player, mouse)
     if index is not None:
-        return {AvailableActionsEnum.ARMOR_INVENTORY_INDEX_MOUSE: index}
+        return {Action.ARMOR_INVENTORY_INDEX_MOUSE: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -223,14 +223,14 @@ def handle_scroll_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
     if index >= 0:
-        return {AvailableActionsEnum.SCROLL_INVENTORY_INDEX: index}
+        return {Action.SCROLL_INVENTORY_INDEX: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -239,14 +239,14 @@ def handle_scroll_inventory_mouse(game_state,options,key, mouse,constants,con,pl
 
     index = determine_menu_index(game_state,options, con, constants, player, mouse)
     if index is not None:
-        return {AvailableActionsEnum.SCROLL_INVENTORY_INDEX_MOUSE: index}
+        return {Action.SCROLL_INVENTORY_INDEX_MOUSE: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -255,14 +255,14 @@ def handle_quaff_inventory_keys(key,mouse):
 
     index = key.c - ord('a')
     if index >= 0:
-        return {AvailableActionsEnum.QUAFF_INVENTORY_INDEX: index}
+        return {Action.QUAFF_INVENTORY_INDEX: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -271,14 +271,14 @@ def handle_quaff_inventory_mouse(game_state,options,key, mouse,constants,con,pla
 
     index = determine_menu_index(game_state,options, con, constants, player, mouse)
     if index is not None:
-        return {AvailableActionsEnum.QUAFF_INVENTORY_INDEX_MOUSE: index}
+        return {Action.QUAFF_INVENTORY_INDEX_MOUSE: index}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -289,7 +289,7 @@ def handle_main_menu(key,mouse,game_state, options, con, constants, player):
         return get_main_menu_key(index)
     else:
         if key.vk == libtcod.KEY_ESCAPE:
-            return {AvailableActionsEnum.EXIT: True}
+            return {Action.EXIT: True}
         else:
             index = key.c - ord('a')
             return get_main_menu_key(index)
@@ -301,7 +301,7 @@ def handle_level_up_menu(key,mouse):
     if key:
         index = key.c - ord('a')
         if index is not None and index >=0:
-            return {AvailableActionsEnum.LEVEL_UP: get_level_up_key(index)}
+            return {Action.LEVEL_UP: get_level_up_key(index)}
 
     return {}
 
@@ -309,21 +309,21 @@ def handle_level_up_menu(key,mouse):
 def handle_level_up_menu_mouse(game_state,options,key, mouse,constants,con,player):
     index = determine_menu_index(game_state,options, con, constants, player, mouse)
     if index is not None:
-        return {AvailableActionsEnum.LEVEL_UP_MOUSE: get_level_up_key(index)}
+        return {Action.LEVEL_UP_MOUSE: get_level_up_key(index)}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
-        return {AvailableActionsEnum.FULLSCREEN: True}
+        return {Action.FULLSCREEN: True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the menu
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
 
 def handle_character_screen(key,mouse):
     if key.vk == libtcod.KEY_ESCAPE:
-        return {AvailableActionsEnum.EXIT: True}
+        return {Action.EXIT: True}
 
     return {}
 
@@ -351,9 +351,9 @@ def handle_mouse(key,mouse,game_state,constants,con,player):
             options = get_level_up_index_options(player)
             return handle_level_up_menu_mouse(game_state,options,key, mouse,constants,con,player)
         else:
-            return {AvailableActionsEnum.LEFT_CLICK: (x, y)}
+            return {Action.LEFT_CLICK: (x, y)}
     elif mouse.rbutton_pressed:
-        return {AvailableActionsEnum.RIGHT_CLICK: (x, y)}
+        return {Action.RIGHT_CLICK: (x, y)}
 
     return {}
 
