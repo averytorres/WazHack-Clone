@@ -6,6 +6,7 @@ from loader_functions.data_loaders import load_game
 from menus import main_menu, message_box
 from menu_info.menu_details import get_main_menu_options
 from loader_functions.initialize_new_game import get_game_variables
+from action_consumer.available_actions_enum import AvailableActionsEnum
 from global_operations import reset_game
 
 
@@ -22,9 +23,9 @@ def handle_main_menu_operations(con,main_menu_background_image,constants,show_lo
     options = get_main_menu_options()
     action = handle_main_menu(key,mouse,game_state, options, con, constants, player)
 
-    new_game = action.get('new_game')
-    load_saved_game = action.get('load_game')
-    exit_game = action.get('exit')
+    new_game = action.get(AvailableActionsEnum.NEW_GAME)
+    load_saved_game = action.get(AvailableActionsEnum.LOAD_GAME)
+    exit_game = action.get(AvailableActionsEnum.EXIT)
 
     if show_load_error_message and (new_game or load_saved_game or exit_game):
         show_load_error_message = False

@@ -1,4 +1,5 @@
 from game_states import GameStates
+from action_consumer.available_actions_enum import AvailableActionsEnum
 
 
 def get_menu_title(menu_name):
@@ -48,11 +49,11 @@ def get_main_menu_options():
 def get_main_menu_key(index):
     index = int(index)
     if index == 0:
-        return {'new_game': True}
+        return {AvailableActionsEnum.NEW_GAME: True}
     elif index == 1:
-        return {'load_game': True}
+        return {AvailableActionsEnum.LOAD_GAME: True}
     elif index == 2:
-        return {'exit': True}
+        return {AvailableActionsEnum.EXIT: True}
     else:
         return {}
 
