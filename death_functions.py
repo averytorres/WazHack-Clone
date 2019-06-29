@@ -3,11 +3,13 @@ from render_functions import RenderOrder
 from game_states import GameStates
 from game_messages import Message
 from messages.deaths import get_generic_death
+from global_operations import reset_game
 
 
 def kill_player(player):
     player.char = '%'
     player.color = libtcod.dark_red
+    reset_game()
 
     return Message(get_generic_death().format(player.first_name.capitalize()), libtcod.red), GameStates.PLAYER_DEAD
 

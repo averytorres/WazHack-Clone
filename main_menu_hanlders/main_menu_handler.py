@@ -6,6 +6,7 @@ from loader_functions.data_loaders import load_game
 from menus import main_menu, message_box
 from menu_info.menu_details import get_main_menu_options
 from loader_functions.initialize_new_game import get_game_variables
+from global_operations import reset_game
 
 
 def handle_main_menu_operations(con,main_menu_background_image,constants,show_load_error_message,key,mouse,player,entities,game_map,message_log,game_state,show_main_menu):
@@ -28,6 +29,7 @@ def handle_main_menu_operations(con,main_menu_background_image,constants,show_lo
     if show_load_error_message and (new_game or load_saved_game or exit_game):
         show_load_error_message = False
     elif new_game:
+        reset_game()
         player, entities, game_map, message_log, game_state = get_game_variables(constants)
         game_state = GameStates.PLAYERS_TURN
 

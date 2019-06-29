@@ -13,6 +13,7 @@ def get_menu_title(menu_name):
     menu_titles.update({GameStates.LEVEL_UP: 'Level up! Choose a stat to raise:'})
     menu_titles.update({GameStates.CHARACTER_SCREEN: 'Character Information'})
     menu_titles.update({GameStates.PLAYERS_TURN: ''})
+    menu_titles.update({GameStates.PLAYER_DEAD: ''})
     menu_titles.update({None: ''})
 
     return menu_titles[menu_name]
@@ -30,6 +31,7 @@ def get_menu_width(menu_name):
     menu_width.update({GameStates.LEVEL_UP: 40})
     menu_width.update({GameStates.CHARACTER_SCREEN: 10})
     menu_width.update({GameStates.PLAYERS_TURN: 24})
+    menu_width.update({GameStates.PLAYER_DEAD: 50})
     menu_width.update({None: 24})
 
     return menu_width[menu_name]
