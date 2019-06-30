@@ -118,6 +118,31 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
 
 
     while True:
+        (menu_x, menu_y) = (mouse.cx - x_offset, mouse.cy - y_offset)
+        custom_offset = 3
+        if menu_x >= 0 and menu_x < width and menu_y >= 0 and menu_y < height - header_height:
+            menu_y = int(math.ceil(menu_y)) - 1
+            len(options)
+            if menu_y >= custom_offset and menu_y < len(options) + custom_offset:
+                libtcod.console_print_ex(window, 1, menu_y+custom_offset+1, libtcod.BKGND_NONE, libtcod.LEFT, ">")
+                for i in range(height):
+                    if i > 0 and i <= height - 5 and i != menu_y+custom_offset+1:
+                        libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT,
+                                                 colorize_text_custom(">", 1, 1, 1))
+                libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
+            else:
+                menu_y = int(math.ceil(menu_y)) - 1
+                if menu_y > 0 and menu_y <= height - 7:
+                    for i in range(height):
+                        if i > 0 and i <= height - 5:
+                            libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT,
+                                                     colorize_text_custom(">", 1, 1, 1))
+                    libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
+        else:
+            for i in range(height):
+                if i > 0 and i <= height-5:
+                    libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(">",1,1,1))
+            libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
         # Present the root console to the player and wait for a key press
         libtcod.console_flush()
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
