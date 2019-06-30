@@ -10,7 +10,7 @@ from action_handlers.inventory_index_ih import get_inventory_index_options
 from global_operations import colorize_text, colorize_text_custom
 
 
-def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,menu_name):
+def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,menu_name,offset=3):
     width += 5
     header = colorize_text(header, libtcod.COLCTRL_2)
     if len(options) > 26:
@@ -119,12 +119,11 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
 
     while True:
         (menu_x, menu_y) = (mouse.cx - x_offset, mouse.cy - y_offset)
-        custom_offset = 3
+        custom_offset = offset
         if menu_x >= 0 and menu_x < width and menu_y >= 0 and menu_y < height - header_height:
             menu_y = int(math.ceil(menu_y)) - 1
-            len(options)
             if menu_y >= custom_offset and menu_y < len(options) + custom_offset:
-                window.draw_rect(1, int(menu_y + custom_offset + 1), width - custom_offset, 1, ch=0, bg=libtcod.darker_gray)
+                window.draw_rect(1, int(menu_y + custom_offset + 1), width - custom_offset-1, 1, ch=0, bg=libtcod.darker_gray)
                 libtcod.console_print_ex(window, 1, menu_y+custom_offset+1, libtcod.BKGND_NONE, libtcod.LEFT, ">")
                 for i in range(height):
                     if i > 0 and i <= height - 5 and i != menu_y+custom_offset+1:
@@ -307,7 +306,7 @@ def main_menu(con, background_image, screen_width, screen_height,window_title,ke
 
 
 def level_up_menu(con, header, player, menu_width, screen_width, screen_height,key, mouse,game_state,options):
-    menu(con, header, options, menu_width, screen_width, screen_height,key, mouse,game_state)
+    menu(con, header, options, menu_width, screen_width, screen_height,key, mouse,game_state,offset=2)
 
 
 def character_screen(title, player, character_screen_width, character_screen_height, screen_width, screen_height,key, mouse,game_state):
