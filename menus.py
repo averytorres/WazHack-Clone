@@ -6,8 +6,9 @@ from action_handlers.quaff_inventory_index_ih import get_quaff_inventory_index_o
 from action_handlers.weapon_inventory_index_ih import get_weapon_inventory_index_options
 from action_handlers.armor_inventory_index_ih import get_armor_inventory_index_options
 from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
-from action_handlers.inventory_index_ih import get_inventory_index_options
+from action_handlers.inventory_index_ih import get_inventory_index_options, set_inventory_index
 from global_operations import colorize_text, colorize_text_custom
+from action_consumer.available_actions_enum import Action
 
 
 def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,menu_name,offset=3):
@@ -116,13 +117,15 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
     y = int(y)
     libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
 
-
+    current_index = offset - 1
     while True:
         (menu_x, menu_y) = (mouse.cx - x_offset, mouse.cy - y_offset)
         custom_offset = offset
         if menu_x >= 0 and menu_x < width and menu_y >= 0 and menu_y < height - header_height:
+
             menu_y = int(math.ceil(menu_y)) - 1
             if menu_y >= custom_offset and menu_y < len(options) + custom_offset:
+                current_index = menu_y
                 window.draw_rect(1, int(menu_y + custom_offset + 1), width - custom_offset-1, 1, ch=0, bg=libtcod.darker_gray)
                 libtcod.console_print_ex(window, 1, menu_y+custom_offset+1, libtcod.BKGND_NONE, libtcod.LEFT, ">")
                 for i in range(height):
@@ -141,12 +144,12 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
                             libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT,
                                                      colorize_text_custom(">", 1, 1, 1))
                     libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
-        else:
-            for i in range(height):
-                if i > 0 and i <= height-5:
-                    window.draw_rect(1, i, width-custom_offset, 1, ch=0, bg=libtcod.black)
-                    libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(">",1,1,1))
-            libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
+        # else:
+        #     for i in range(height):
+        #         if i > 0 and i <= height-5:
+        #             window.draw_rect(1, i, width-custom_offset, 1, ch=0, bg=libtcod.black)
+        #             libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT, colorize_text_custom(">",1,1,1))
+        #     libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
         # Present the root console to the player and wait for a key press
         libtcod.console_flush()
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
@@ -169,6 +172,58 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
         index = key.c - ord('a')
         if index >= 0 and index < len(options):
             return index
+
+        key_char = chr(key.c)
+        if key.vk == libtcod.KEY_UP or key_char == 'k':
+            current_index -= 1
+
+            if current_index < 3:
+                current_index = 3
+            if current_index > (2 + len(options)):
+                current_index = 2 + len(options)
+
+            for i in range(height):
+                if i > 0 and i <= height - 5:
+                    window.draw_rect(1, i, width - custom_offset, 1, ch=0, bg=libtcod.black)
+                    libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT,
+                                             colorize_text_custom(">", 1, 1, 1))
+
+            window.draw_rect(1, int(current_index + custom_offset), width - custom_offset - 1, 1, ch=0,
+                             bg=libtcod.black)
+            libtcod.console_print_ex(window, 1, current_index + custom_offset, libtcod.BKGND_NONE, libtcod.LEFT,
+                                     colorize_text_custom(">", 1, 1, 1))
+            window.draw_rect(1, int(current_index + custom_offset + 1), width - custom_offset - 1, 1, ch=0,
+                             bg=libtcod.darker_gray)
+            libtcod.console_print_ex(window, 1, current_index + custom_offset + 1, libtcod.BKGND_NONE, libtcod.LEFT,
+                                     ">")
+            libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
+
+        elif key.vk == libtcod.KEY_DOWN or key_char == 'j':
+            current_index += 1
+            if current_index < 3:
+                current_index = 3
+            if current_index > (2 + len(options)):
+                current_index = 2 + len(options)
+
+            for i in range(height):
+                if i > 0 and i <= height - 5:
+                    window.draw_rect(1, i, width - custom_offset, 1, ch=0, bg=libtcod.black)
+                    libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT,
+                                             colorize_text_custom(">", 1, 1, 1))
+
+            window.draw_rect(1, int(current_index + custom_offset), width - custom_offset - 1, 1, ch=0,
+                             bg=libtcod.black)
+            libtcod.console_print_ex(window, 1, current_index + custom_offset, libtcod.BKGND_NONE, libtcod.LEFT,
+                                     colorize_text_custom(">", 1, 1, 1))
+            window.draw_rect(1, int(current_index + custom_offset + 1), width - custom_offset - 1, 1, ch=0,
+                             bg=libtcod.darker_gray)
+            libtcod.console_print_ex(window, 1, current_index + custom_offset + 1, libtcod.BKGND_NONE, libtcod.LEFT, ">")
+            libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
+
+        elif key.vk == libtcod.KEY_ENTER:
+            current_index = int(math.ceil(current_index))
+            set_inventory_index(current_index)
+            return current_index
 
         # If they hit a letter that is not an option, return None
         if index >= 0 and index <= 26:

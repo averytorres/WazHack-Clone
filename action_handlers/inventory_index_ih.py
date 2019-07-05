@@ -47,3 +47,16 @@ def get_inventory_states():
     invent_states.append(GameStates.CHARACTER_SCREEN)
 
     return invent_states
+
+
+inventory_index = None
+
+def set_inventory_index(input):
+    global inventory_index
+    inventory_index = input;
+
+def get_inventory_index():
+    global inventory_index
+    inventory_index_temp = inventory_index
+    inventory_index = None
+    return inventory_index_temp

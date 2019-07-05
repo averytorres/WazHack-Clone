@@ -9,6 +9,7 @@ from action_handlers.quaff_inventory_index_ih import get_quaff_inventory_index_o
 from action_handlers.level_up_ih import get_level_up_index_options
 from action_handlers.level_up_ih import get_level_up_key
 from action_consumer.available_actions_enum import Action
+from action_handlers.inventory_index_ih import get_inventory_index
 import math
 
 
@@ -130,6 +131,10 @@ def handle_inventory_keys(key,mouse):
     if index >= 0:
         return {Action.INVENTORY_INDEX: index}
 
+    inventory_index = get_inventory_index()
+    if key.vk == libtcod.KEY_ENTER and inventory_index != None:
+        return {Action.INVENTORY_INDEX: inventory_index - 3}
+
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
         return {Action.FULLSCREEN: True}
@@ -162,6 +167,10 @@ def handle_weapon_inventory_keys(key,mouse):
     if index >= 0:
         return {Action.WEAPON_INVENTORY_INDEX: index}
 
+    inventory_index = get_inventory_index()
+    if key.vk == libtcod.KEY_ENTER and inventory_index != None:
+        return {Action.INVENTORY_INDEX: inventory_index - 3}
+
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
         return {Action.FULLSCREEN: True}
@@ -192,6 +201,10 @@ def handle_armor_inventory_keys(key,mouse):
     index = key.c - ord('a')
     if index >= 0:
         return {Action.ARMOR_INVENTORY_INDEX: index}
+
+    inventory_index = get_inventory_index()
+    if key.vk == libtcod.KEY_ENTER and inventory_index != None:
+        return {Action.INVENTORY_INDEX: inventory_index - 3}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
@@ -225,6 +238,10 @@ def handle_scroll_inventory_keys(key,mouse):
     if index >= 0:
         return {Action.SCROLL_INVENTORY_INDEX: index}
 
+    inventory_index = get_inventory_index()
+    if key.vk == libtcod.KEY_ENTER and inventory_index != None:
+        return {Action.INVENTORY_INDEX: inventory_index - 3}
+
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
         return {Action.FULLSCREEN: True}
@@ -256,6 +273,10 @@ def handle_quaff_inventory_keys(key,mouse):
     index = key.c - ord('a')
     if index >= 0:
         return {Action.QUAFF_INVENTORY_INDEX: index}
+
+    inventory_index = get_inventory_index()
+    if key.vk == libtcod.KEY_ENTER and inventory_index != None:
+        return {Action.INVENTORY_INDEX: inventory_index - 3}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
@@ -404,7 +425,6 @@ def determine_main_menu_index(menu_name,options,con,constants,player,mouse):
     x_offset = x  # x is the left edge of the menu
     y_offset = y + (header_height - (header_height / 5)) - 1 # The top edge of the menu
 
-    print("y_offset: " + str(y_offset))
     (menu_x, menu_y) = (mouse.cx - x_offset, mouse.cy - y_offset)
     if menu_x >= 0 and menu_x < menu_width and menu_y >= 0 and menu_y < height - header_height:
         menu_y = int(math.ceil(menu_y)) - 1
