@@ -169,7 +169,7 @@ def handle_weapon_inventory_keys(key,mouse):
 
     inventory_index = get_inventory_index()
     if key.vk == libtcod.KEY_ENTER and inventory_index != None:
-        return {Action.INVENTORY_INDEX: inventory_index - 3}
+        return {Action.WEAPON_INVENTORY_INDEX: inventory_index - 3}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
@@ -204,7 +204,7 @@ def handle_armor_inventory_keys(key,mouse):
 
     inventory_index = get_inventory_index()
     if key.vk == libtcod.KEY_ENTER and inventory_index != None:
-        return {Action.INVENTORY_INDEX: inventory_index - 3}
+        return {Action.ARMOR_INVENTORY_INDEX: inventory_index - 3}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
@@ -240,7 +240,7 @@ def handle_scroll_inventory_keys(key,mouse):
 
     inventory_index = get_inventory_index()
     if key.vk == libtcod.KEY_ENTER and inventory_index != None:
-        return {Action.INVENTORY_INDEX: inventory_index - 3}
+        return {Action.SCROLL_INVENTORY_INDEX: inventory_index - 3}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
@@ -276,7 +276,7 @@ def handle_quaff_inventory_keys(key,mouse):
 
     inventory_index = get_inventory_index()
     if key.vk == libtcod.KEY_ENTER and inventory_index != None:
-        return {Action.INVENTORY_INDEX: inventory_index - 3}
+        return {Action.QUAFF_INVENTORY_INDEX: inventory_index - 3}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
