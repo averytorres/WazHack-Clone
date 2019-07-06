@@ -12,6 +12,7 @@ from render_functions import RenderOrder
 from messages.names import get_generic_first_name
 from item_probability.item_chances import get_item_chances
 from item_choice_definition.item_choice import get_item_choice
+from map_objects.room_types import determine_room_type
 
 
 class GameMap:
@@ -60,7 +61,7 @@ class GameMap:
                 # this means there are no intersections, so this room is valid
 
                 # "paint" it to the map's tiles
-                self.create_room(new_room)
+                determine_room_type(new_room, self)
 
                 # center coordinates of new room, will be useful later
                 (new_x, new_y) = new_room.center()
@@ -152,9 +153,13 @@ class GameMap:
         item_chances = get_item_chances(self)
 
         for i in range(number_of_monsters):
-            # Choose a random location in the room
-            x = randint(room.x1 + 1, room.x2 - 1)
-            y = randint(room.y1 + 1, room.y2 - 1)
+            # Choose a random location in the room that is not blocked
+            open_tile_found = False
+            while not open_tile_found:
+                x = randint(room.x1 + 1, room.x2 - 1)
+                y = randint(room.y1 + 1, room.y2 - 1)
+                if self.tiles[x][y].blocked == False:
+                    open_tile_found = True
 
             # Check if an entity is already in that location
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
@@ -176,8 +181,12 @@ class GameMap:
                 entities.append(monster)
 
         for i in range(number_of_items):
-            x = randint(room.x1 + 1, room.x2 - 1)
-            y = randint(room.y1 + 1, room.y2 - 1)
+            open_tile_found = False
+            while not open_tile_found:
+                x = randint(room.x1 + 1, room.x2 - 1)
+                y = randint(room.y1 + 1, room.y2 - 1)
+                if self.tiles[x][y].blocked == False:
+                    open_tile_found = True
 
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
@@ -186,10 +195,14 @@ class GameMap:
                 entities.append(item)
 
     def is_blocked(self, x, y):
-        if self.tiles[x][y].blocked:
+        try:
+            if self.tiles[x][y].blocked:
+                return True
+            else:
+                return False
+        except:
             return True
 
-        return False
 
     def next_floor(self, player, message_log, constants, direction):
         self.prev_dungeon_level = self.dungeon_level
