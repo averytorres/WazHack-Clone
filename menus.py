@@ -8,7 +8,7 @@ from action_handlers.armor_inventory_index_ih import get_armor_inventory_index_o
 from action_handlers.scroll_inventory_index_ih import get_scroll_inventory_index_options
 from action_handlers.inventory_index_ih import get_inventory_index_options, set_inventory_index
 from global_operations import colorize_text, colorize_text_custom
-from action_consumer.available_actions_enum import Action
+from game_states import GameStates
 
 
 def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,menu_name,offset=3):
@@ -176,6 +176,9 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
         key_char = chr(key.c)
         if key.vk == libtcod.KEY_UP or key_char == 'k':
             current_index -= 1
+            menu_move = 0
+            if GameStates.LEVEL_UP == menu_name:
+                menu_move = 1
 
             if current_index < 3:
                 current_index = 3
@@ -188,18 +191,22 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
                     libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT,
                                              colorize_text_custom(">", 1, 1, 1))
 
-            window.draw_rect(1, int(current_index + custom_offset), width - custom_offset - 1, 1, ch=0,
+            window.draw_rect(1, int(current_index + custom_offset - menu_move), width - custom_offset - 1, 1, ch=0,
                              bg=libtcod.black)
             libtcod.console_print_ex(window, 1, current_index + custom_offset, libtcod.BKGND_NONE, libtcod.LEFT,
                                      colorize_text_custom(">", 1, 1, 1))
-            window.draw_rect(1, int(current_index + custom_offset + 1), width - custom_offset - 1, 1, ch=0,
+            window.draw_rect(1, int(current_index + custom_offset + 1 - menu_move), width - custom_offset - 1, 1, ch=0,
                              bg=libtcod.darker_gray)
-            libtcod.console_print_ex(window, 1, current_index + custom_offset + 1, libtcod.BKGND_NONE, libtcod.LEFT,
+            libtcod.console_print_ex(window, 1, current_index + custom_offset + 1 - menu_move, libtcod.BKGND_NONE, libtcod.LEFT,
                                      ">")
             libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
 
         elif key.vk == libtcod.KEY_DOWN or key_char == 'j':
             current_index += 1
+            menu_move = 0
+            if GameStates.LEVEL_UP == menu_name:
+                menu_move = 1
+
             if current_index < 3:
                 current_index = 3
             if current_index > (2 + len(options)):
@@ -207,17 +214,17 @@ def menu(con, header, options, width, SCREEN_WIDTH, SCREEN_HEIGHT,key, mouse,men
 
             for i in range(height):
                 if i > 0 and i <= height - 5:
-                    window.draw_rect(1, i, width - custom_offset, 1, ch=0, bg=libtcod.black)
+                    window.draw_rect(1, i , width - custom_offset, 1, ch=0, bg=libtcod.black)
                     libtcod.console_print_ex(window, 1, i, libtcod.BKGND_NONE, libtcod.LEFT,
                                              colorize_text_custom(">", 1, 1, 1))
 
-            window.draw_rect(1, int(current_index + custom_offset), width - custom_offset - 1, 1, ch=0,
+            window.draw_rect(1, int(current_index + custom_offset - menu_move), width - custom_offset - 1, 1, ch=0,
                              bg=libtcod.black)
-            libtcod.console_print_ex(window, 1, current_index + custom_offset, libtcod.BKGND_NONE, libtcod.LEFT,
+            libtcod.console_print_ex(window, 1, current_index + custom_offset - menu_move, libtcod.BKGND_NONE, libtcod.LEFT,
                                      colorize_text_custom(">", 1, 1, 1))
-            window.draw_rect(1, int(current_index + custom_offset + 1), width - custom_offset - 1, 1, ch=0,
+            window.draw_rect(1, int(current_index + custom_offset + 1 - menu_move), width - custom_offset - 1, 1, ch=0,
                              bg=libtcod.darker_gray)
-            libtcod.console_print_ex(window, 1, current_index + custom_offset + 1, libtcod.BKGND_NONE, libtcod.LEFT, ">")
+            libtcod.console_print_ex(window, 1, current_index + custom_offset + 1 - menu_move, libtcod.BKGND_NONE, libtcod.LEFT, ">")
             libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
 
         elif key.vk == libtcod.KEY_ENTER:

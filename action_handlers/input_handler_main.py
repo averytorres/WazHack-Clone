@@ -319,10 +319,17 @@ def handle_main_menu(key,mouse,game_state, options, con, constants, player):
 
 
 def handle_level_up_menu(key,mouse):
+
     if key:
         index = key.c - ord('a')
         if index is not None and index >=0:
             return {Action.LEVEL_UP: get_level_up_key(index)}
+
+        inventory_index = get_inventory_index()
+        inventory_index = inventory_index - 3
+
+        if key.vk == libtcod.KEY_ENTER and inventory_index != None:
+            return {Action.LEVEL_UP:  get_level_up_key(inventory_index)}
 
     return {}
 
