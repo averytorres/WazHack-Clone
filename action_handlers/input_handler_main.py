@@ -14,6 +14,9 @@ import math
 
 
 def handle_keys(key,mouse,game_state):
+
+    if key.vk != 0:
+
     if game_state == GameStates.PLAYERS_TURN:
         return handle_player_turn_keys(key,mouse)
     elif game_state == GameStates.PLAYER_DEAD:
@@ -82,10 +85,10 @@ def handle_player_turn_keys(key,mouse):
     elif key_char == 'd':
         return {Action.DROP_INVENTORY: True}
 
-    elif key_char == '.':
+    elif key_char == '.' and key.shift:
         return {Action.TAKE_STAIRS_DOWN: True}
 
-    elif key_char == ',':
+    elif key_char == ',' and key.shift:
         return {Action.TAKE_STAIRS_UP: True}
 
     elif key_char == 'c':
